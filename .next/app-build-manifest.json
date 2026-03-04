@@ -1,3 +1,22 @@
 {
-  "pages": {}
+  "pages": {
+    "/(marketing)/page": [
+      "static/chunks/[root of the server]__b74e55._.css",
+      "static/chunks/_7cb389._.js",
+      "static/chunks/src_app_layout_tsx_61af54._.js",
+      "static/chunks/node_modules_5c05e4._.js",
+      "static/chunks/src_31b22a._.js",
+      "static/chunks/src_app_(marketing)_layout_tsx_03f03c._.js",
+      "static/chunks/src_app_(marketing)_page_tsx_dcbc54._.js",
+      "static/chunks/src_app_(marketing)_page_tsx_384a18._.js",
+      "static/chunks/node_modules_next_dist_compiled_react-dom_1f56dc._.js",
+      "static/chunks/node_modules_next_dist_compiled_107ce8._.js",
+      "static/chunks/node_modules_next_dist_client_523921._.js",
+      "static/chunks/node_modules_next_dist_4bb10e._.js",
+      "static/chunks/node_modules_@swc_helpers_cjs_00636a._.js",
+      "static/chunks/[turbopack]_browser_dev_hmr-client_hmr-client_ts_d0a96d._.js",
+      "static/chunks/_e69f0d._.js",
+      "static/chunks/_d95469._.js"
+    ]
+  }
 }
