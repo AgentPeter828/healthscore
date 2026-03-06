@@ -44,6 +44,25 @@ export default function SignupPage() {
     setLoading(true);
     setError(null);
 
+    if (!fullName.trim()) {
+      setError("Full name is required");
+      setLoading(false);
+      return;
+    }
+
+    if (!orgName.trim()) {
+      setError("Company name is required");
+      setLoading(false);
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError("Please enter a valid email address");
+      setLoading(false);
+      return;
+    }
+
     if (password.length < 8) {
       setError("Password must be at least 8 characters");
       setLoading(false);

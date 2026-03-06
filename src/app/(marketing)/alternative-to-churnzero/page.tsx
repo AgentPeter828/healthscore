@@ -1,6 +1,12 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { CheckCircle, XCircle } from "lucide-react";
 import { PricingDisclosure } from "@/components/marketing/pricing-disclosure";
+
+export const metadata: Metadata = {
+  title: "HealthScore vs ChurnZero — Affordable Alternative",
+  description: "Compare HealthScore vs ChurnZero for customer health scoring. Self-serve at $49/mo vs enterprise Contact Sales pricing. Free plan available.",
+};
 
 type CellValue = boolean | string;
 
@@ -88,7 +94,7 @@ export default function AlternativeToChurnZeroPage() {
           <PricingDisclosure
             competitorName="ChurnZero"
             sourceUrl="https://churnzero.com/pricing"
-            dateVerified="March 2025"
+            dateVerified="March 2026"
           />
         </div>
       </section>

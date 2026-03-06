@@ -1,4 +1,10 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Features",
+  description: "10 powerful features for customer health scoring: real-time health scores, churn prediction, Slack alerts, automated playbooks, custom formulas, and more.",
+};
 import {
   Activity,
   Bell,

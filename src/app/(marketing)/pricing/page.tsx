@@ -375,7 +375,7 @@ export default function PricingPage() {
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-extrabold">Ready to get started?</h2>
           <p className="mt-4 text-xl text-blue-100">
-            Join 500+ CS teams reducing churn with HealthScore.
+            Start reducing churn today — set up in minutes, not weeks.
           </p>
           <Link
             href="/signup"

@@ -1,3 +1,23 @@
 {
-  "/(marketing)/page": "app/(marketing)/page.js"
+  "/(marketing)/page": "app/(marketing)/page.js",
+  "/(marketing)/pricing/page": "app/(marketing)/pricing/page.js",
+  "/(marketing)/features/page": "app/(marketing)/features/page.js",
+  "/(marketing)/alternative-to-custify/page": "app/(marketing)/alternative-to-custify/page.js",
+  "/(marketing)/alternative-to-churnzero/page": "app/(marketing)/alternative-to-churnzero/page.js",
+  "/(marketing)/alternative-to-gainsight/page": "app/(marketing)/alternative-to-gainsight/page.js",
+  "/(legal)/terms/page": "app/(legal)/terms/page.js",
+  "/(legal)/privacy/page": "app/(legal)/privacy/page.js",
+  "/(legal)/refund/page": "app/(legal)/refund/page.js",
+  "/(auth)/login/page": "app/(auth)/login/page.js",
+  "/(auth)/signup/page": "app/(auth)/signup/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/webhooks/[integrationId]/route": "app/api/webhooks/[integrationId]/route.js",
+  "/api/accounts/route": "app/api/accounts/route.js",
+  "/api/alerts/route": "app/api/alerts/route.js",
+  "/api/formula/route": "app/api/formula/route.js",
+  "/api/integrations/route": "app/api/integrations/route.js",
+  "/api/notes/route": "app/api/notes/route.js",
+  "/api/playbooks/route": "app/api/playbooks/route.js",
+  "/api/renewals/route": "app/api/renewals/route.js",
+  "/api/billing/webhook/route": "app/api/billing/webhook/route.js"
 }

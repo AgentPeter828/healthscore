@@ -121,27 +121,21 @@ const plans = [
   },
 ];
 
-const testimonials = [
+const whyHealthScore = [
   {
-    quote:
-      "HealthScore flagged three at-risk accounts we had no idea about. We saved all three. ROI paid for itself in the first week.",
-    author: "Sarah Chen",
-    role: "Head of Customer Success",
-    company: "Growthly",
+    title: "No sales call required",
+    description: "Sign up, connect your tools, and see health scores in minutes. No demo, no pitch, no waiting.",
+    icon: "🚀",
   },
   {
-    quote:
-      "We migrated from Gainsight and set up HealthScore in an afternoon. No professional services, no 6-month onboarding. It just works.",
-    author: "Marcus Webb",
-    role: "VP Customer Success",
-    company: "DataSync",
+    title: "Public, transparent pricing",
+    description: "Our pricing is on the website. No 'Contact Sales', no custom quotes, no surprises.",
+    icon: "💰",
   },
   {
-    quote:
-      "The Slack alerts alone are worth the price. My team catches churn signals immediately instead of finding out on a quarterly review.",
-    author: "Priya Nair",
-    role: "Customer Success Manager",
-    company: "FlowStack",
+    title: "Built for growing teams",
+    description: "You don't need a CS Ops team or a 6-month implementation. If you use Stripe, Intercom, or HubSpot, you're ready.",
+    icon: "📈",
   },
 ];
 
@@ -155,7 +149,7 @@ export default function HomePage() {
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-1.5 text-sm text-blue-300 mb-8">
               <span className="h-2 w-2 rounded-full bg-blue-400 animate-pulse" />
-              Trusted by 500+ customer success teams
+              Customer health scoring for SaaS teams
             </div>
             <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl leading-tight">
               Know which customers are about to churn{" "}
@@ -453,47 +447,26 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Social proof */}
+      {/* Why HealthScore */}
       <section className="py-20 bg-gray-50">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-14">
             <p className="text-sm font-semibold uppercase tracking-wider text-blue-600 mb-3">
-              Social proof
+              Why HealthScore
             </p>
             <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">
-              Trusted by 500+ CS teams
+              The transparent alternative to enterprise CS tools
             </h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {testimonials.map((t) => (
+            {whyHealthScore.map((item) => (
               <div
-                key={t.author}
+                key={item.title}
                 className="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm"
               >
-                <div className="flex gap-1 mb-4">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <span key={i} className="text-yellow-400 text-lg">
-                      ★
-                    </span>
-                  ))}
-                </div>
-                <blockquote className="text-gray-700 leading-relaxed">
-                  &ldquo;{t.quote}&rdquo;
-                </blockquote>
-                <div className="mt-6 flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white text-sm font-bold">
-                    {t.author
-                      .split(" ")
-                      .map((n) => n[0])
-                      .join("")}
-                  </div>
-                  <div>
-                    <p className="font-semibold text-gray-900 text-sm">{t.author}</p>
-                    <p className="text-xs text-gray-500">
-                      {t.role}, {t.company}
-                    </p>
-                  </div>
-                </div>
+                <div className="text-4xl mb-4">{item.icon}</div>
+                <h3 className="font-semibold text-gray-900 text-lg mb-2">{item.title}</h3>
+                <p className="text-gray-600 leading-relaxed">{item.description}</p>
               </div>
             ))}
           </div>
@@ -507,7 +480,7 @@ export default function HomePage() {
             Ready to reduce churn?
           </h2>
           <p className="mt-4 text-xl text-blue-100">
-            Join 500+ CS teams using HealthScore to keep their customers happy and their MRR growing.
+            Start seeing which customers are at risk — set up in minutes, not weeks.
           </p>
           <div className="mt-10 flex flex-wrap justify-center gap-4">
             <Link

@@ -7,7 +7,7 @@ const footerLinks = {
       { name: "Features", href: "/features" },
       { name: "Pricing", href: "/pricing" },
       { name: "Integrations", href: "/features#integrations" },
-      { name: "Changelog", href: "/changelog" },
+      { name: "Sign Up Free", href: "/signup" },
     ],
   },
   alternatives: {
@@ -29,9 +29,7 @@ const footerLinks = {
   company: {
     title: "Company",
     links: [
-      { name: "About", href: "/about" },
-      { name: "Blog", href: "/blog" },
-      { name: "Contact", href: "/contact" },
+      { name: "Contact", href: "mailto:hello@projectfirestorm.com" },
     ],
   },
 };
@@ -80,7 +78,7 @@ export function MarketingFooter() {
 
         <div className="mt-12 border-t border-gray-800 pt-8">
           <p className="text-sm text-gray-500 text-center">
-            &copy; 2025 Project Firestorm Pty Ltd. All rights reserved.
+            &copy; {new Date().getFullYear()} Project Firestorm Pty Ltd. All rights reserved.
           </p>
         </div>
       </div>

@@ -1,6 +1,12 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { CheckCircle, XCircle } from "lucide-react";
 import { PricingDisclosure } from "@/components/marketing/pricing-disclosure";
+
+export const metadata: Metadata = {
+  title: "HealthScore vs Custify — Affordable Alternative",
+  description: "Compare HealthScore vs Custify for customer health scoring. Self-serve signup starting at $49/mo vs Contact Sales pricing. Free plan available.",
+};
 
 type CellValue = boolean | string;
 
@@ -84,7 +90,7 @@ export default function AlternativeToCustifyPage() {
           <PricingDisclosure
             competitorName="Custify"
             sourceUrl="https://www.custify.com/pricing"
-            dateVerified="March 2025"
+            dateVerified="March 2026"
           />
         </div>
       </section>

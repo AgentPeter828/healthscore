@@ -1,6 +1,12 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { CheckCircle, XCircle } from "lucide-react";
 import { PricingDisclosure } from "@/components/marketing/pricing-disclosure";
+
+export const metadata: Metadata = {
+  title: "HealthScore vs Gainsight — Affordable Alternative",
+  description: "Compare HealthScore vs Gainsight for customer health scoring. Start at $49/mo with self-serve signup vs enterprise-only Contact Sales. Free plan available.",
+};
 
 type CellValue = boolean | string;
 
@@ -91,7 +97,7 @@ export default function AlternativeToGainsightPage() {
           <PricingDisclosure
             competitorName="Gainsight"
             sourceUrl="https://www.gainsight.com/pricing"
-            dateVerified="March 2025"
+            dateVerified="March 2026"
           />
         </div>
       </section>
