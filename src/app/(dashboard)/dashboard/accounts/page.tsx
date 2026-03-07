@@ -208,7 +208,7 @@ export default async function AccountsPage({ searchParams }: PageProps) {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {rows.map((account) => {
+              {rows.map((account: any) => {
                 const hs = Array.isArray(account.health_score)
                   ? account.health_score[0]
                   : (account.health_score as {

@@ -182,7 +182,7 @@ export default async function ChurnRiskPage({ searchParams }: PageProps) {
     } | null;
   };
 
-  let rows: AccountRow[] = (accounts ?? []).map((a) => {
+  let rows: AccountRow[] = (accounts ?? []).map((a: any) => {
     const hs = Array.isArray(a.health_score)
       ? a.health_score[0]
       : (a.health_score as AccountRow["hs"]);
@@ -195,7 +195,7 @@ export default async function ChurnRiskPage({ searchParams }: PageProps) {
   }
 
   // Sort by churn_risk desc
-  rows.sort((a, b) => (b.hs?.churn_risk ?? 0) - (a.hs?.churn_risk ?? 0));
+  rows.sort((a: any, b: any) => (b.hs?.churn_risk ?? 0) - (a.hs?.churn_risk ?? 0));
 
   // Stats
   const allWithHs = rows.filter((r) => r.hs != null);

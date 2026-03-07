@@ -1,7 +1,14 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
+const USE_MOCK = process.env.NEXT_PUBLIC_MOCK_DATA === "true";
+
 export async function updateSession(request: NextRequest) {
+  // In mock mode, skip auth checks — always allow access
+  if (USE_MOCK) {
+    return NextResponse.next({ request });
+  }
+
   let supabaseResponse = NextResponse.next({ request });
 
   const supabase = createServerClient(

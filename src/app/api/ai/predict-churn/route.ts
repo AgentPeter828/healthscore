@@ -58,7 +58,7 @@ export async function POST() {
   }
 
   const formulaComponents = (formula?.components as FormulaComponent[]) || [];
-  const predictions = [];
+  const predictions: any[] = [];
   let updatedCount = 0;
 
   for (const account of accounts) {

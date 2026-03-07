@@ -112,7 +112,7 @@ export default async function HealthScoresPage() {
   const avgScore =
     scored.length > 0
       ? Math.round(
-          scored.reduce((sum, a) => {
+          scored.reduce((sum: any, a: any) => {
             const hs = Array.isArray(a.health_score) ? a.health_score[0] : a.health_score;
             return sum + ((hs as { overall_score?: number } | null)?.overall_score ?? 0);
           }, 0) / scored.length

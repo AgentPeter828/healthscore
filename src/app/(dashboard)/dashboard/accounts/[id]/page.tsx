@@ -294,7 +294,7 @@ export default async function AccountDetailPage({
 
   const hs = healthScore;
 
-  const trendData = (scoreHistory ?? []).map((h) => ({
+  const trendData = (scoreHistory ?? []).map((h: any) => ({
     date: h.snapshot_date,
     score: h.overall_score,
   }));
@@ -470,7 +470,7 @@ export default async function AccountDetailPage({
                 <CardContent>
                   {webhookEvents && webhookEvents.length > 0 ? (
                     <div className="space-y-3">
-                      {webhookEvents.slice(0, 5).map((evt) => (
+                      {webhookEvents.slice(0, 5).map((evt: any) => (
                         <div
                           key={evt.id}
                           className="flex items-start gap-3 text-sm"
@@ -506,7 +506,7 @@ export default async function AccountDetailPage({
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-3">
-                      {playbookRuns.map((run) => {
+                      {playbookRuns.map((run: any) => {
                         const pb = Array.isArray(run.playbook)
                           ? run.playbook[0]
                           : (run.playbook as { name?: string } | null);
@@ -562,7 +562,7 @@ export default async function AccountDetailPage({
                       {/* Timeline line */}
                       <div className="absolute left-3 top-2 bottom-2 w-px bg-border" />
                       <div className="space-y-4 pl-10">
-                        {webhookEvents.map((evt) => {
+                        {webhookEvents.map((evt: any) => {
                           const payload = evt.payload as Record<string, unknown>;
                           return (
                             <div key={evt.id} className="relative">
@@ -636,7 +636,7 @@ export default async function AccountDetailPage({
                 <CardContent>
                   {contacts && contacts.length > 0 ? (
                     <div className="divide-y divide-border -mx-6">
-                      {contacts.map((contact) => (
+                      {contacts.map((contact: any) => (
                         <div
                           key={contact.id}
                           className="flex items-center gap-4 px-6 py-3"
@@ -724,7 +724,7 @@ export default async function AccountDetailPage({
                 <CardContent>
                   {notes && notes.length > 0 ? (
                     <div className="space-y-4">
-                      {notes.map((note) => {
+                      {notes.map((note: any) => {
                         const author = Array.isArray(note.author)
                           ? note.author[0]
                           : (note.author as { full_name?: string } | null);

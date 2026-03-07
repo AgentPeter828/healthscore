@@ -150,7 +150,7 @@ export function RenewalsCalendar({ renewals }: RenewalsCalendarProps) {
 
   // Build 3 months: current, next, the one after
   const months = useMemo(() => {
-    const result = [];
+    const result: { year: number; month: number }[] = [];
     for (let i = 0; i < 3; i++) {
       const d = new Date(today.getFullYear(), today.getMonth() + i, 1);
       result.push({ year: d.getFullYear(), month: d.getMonth() });
