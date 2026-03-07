@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { noteCreationSchema } from "@/lib/validators";
 
 export async function POST(request: NextRequest) {
   const supabase = await createClient();
@@ -11,7 +12,17 @@ export async function POST(request: NextRequest) {
   if (!profile?.organization_id) return NextResponse.json({ error: "No org" }, { status: 400 });
 
   const body = await request.json();
-  const { account_id, content, type } = body;
+
+  // Validate with Zod
+  const parsed = noteCreationSchema.safeParse(body);
+  if (!parsed.success) {
+    return NextResponse.json(
+      { error: "Invalid note data", details: parsed.error.issues },
+      { status: 400 }
+    );
+  }
+
+  const { account_id, content, type } = parsed.data;
 
   const { data: note, error } = await supabase
     .from("hs_notes")

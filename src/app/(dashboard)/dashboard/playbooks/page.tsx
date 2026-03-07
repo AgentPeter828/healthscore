@@ -135,8 +135,7 @@ export default async function PlaybooksPage() {
           <Zap className="w-12 h-12 mx-auto mb-4 text-slate-300" />
           <h3 className="text-lg font-semibold text-foreground mb-2">No playbooks yet</h3>
           <p className="text-muted-foreground text-sm mb-6 max-w-sm mx-auto">
-            Create your first playbook to automatically respond to customer health signals — like
-            sending a Slack alert when a score drops.
+            Create your first playbook to automate customer success actions.
           </p>
           <PlaybookBuilder mode="create" />
         </div>

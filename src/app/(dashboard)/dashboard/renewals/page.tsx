@@ -207,7 +207,7 @@ export default async function RenewalsPage({
             <Calendar className="w-12 h-12 mx-auto mb-4 text-slate-300" />
             <h3 className="text-lg font-semibold text-foreground mb-1">No renewals yet</h3>
             <p className="text-sm text-muted-foreground">
-              Renewals are created from account data. Set a renewal date on any account to track it here.
+              No upcoming renewals tracked yet.
             </p>
           </div>
         ) : (

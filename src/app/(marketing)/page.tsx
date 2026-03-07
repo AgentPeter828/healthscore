@@ -25,7 +25,7 @@ const features = [
     icon: TrendingDown,
     name: "Churn Prediction",
     description:
-      "ML-powered churn risk signals that surface at-risk accounts weeks before they cancel.",
+      "Predictive churn risk signals that surface at-risk accounts weeks before they cancel.",
   },
   {
     icon: Bell,
@@ -65,7 +65,7 @@ const features = [
   },
   {
     icon: Settings,
-    name: "CSM Workspaces",
+    name: "Account Management",
     description:
       "Dedicated workspaces for each CSM with their own account list, alerts, and performance metrics.",
   },
@@ -73,7 +73,7 @@ const features = [
     icon: Shield,
     name: "Data Privacy Controls",
     description:
-      "Full GDPR, CCPA, and Australian Privacy Act compliance with granular data retention controls.",
+      "Built with privacy in mind — data isolation, role-based access, and compliance-ready architecture for GDPR, CCPA, and the Australian Privacy Act.",
   },
 ];
 
@@ -114,7 +114,7 @@ const plans = [
     price: "$99",
     period: "/mo",
     description: "For scaling businesses",
-    features: ["Up to 1,000 accounts", "Unlimited integrations", "Automated playbooks", "CSM workspaces", "API access"],
+    features: ["Up to 1,000 accounts", "Unlimited integrations", "Automated playbooks", "Account management", "API access"],
     cta: "Start free trial",
     href: "/signup?plan=growth",
     highlighted: false,

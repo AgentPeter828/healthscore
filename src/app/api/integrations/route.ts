@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { logAudit } from "@/lib/audit";
 
 export async function GET() {
   const supabase = await createClient();
@@ -68,6 +69,11 @@ export async function POST(request: NextRequest) {
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
 
+  await logAudit(profile.organization_id, user.id, "integration.connected", {
+    integration_id: integration?.id,
+    type,
+  });
+
   return NextResponse.json(integration);
 }
 
@@ -86,6 +92,12 @@ export async function DELETE(request: NextRequest) {
     .update({ is_active: false })
     .eq("id", id)
     .eq("organization_id", profile?.organization_id);
+
+  if (profile?.organization_id) {
+    await logAudit(profile.organization_id, user.id, "integration.disconnected", {
+      integration_id: id,
+    });
+  }
 
   return NextResponse.json({ success: true });
 }

@@ -7,6 +7,24 @@ import {
   type RawMetrics,
 } from "@/lib/health-score-engine";
 import type { FormulaComponent } from "@/lib/types";
+import { rateLimitWebhook } from "@/lib/rate-limit";
+import { webhookPayloadSchema } from "@/lib/validators";
+import { createHmac } from "crypto";
+
+// Replay protection: LRU-style set of processed event IDs
+const processedEventIds = new Map<string, number>();
+const MAX_EVENT_IDS = 10000;
+
+function trackEventId(eventId: string): boolean {
+  if (processedEventIds.has(eventId)) return false; // duplicate
+  if (processedEventIds.size >= MAX_EVENT_IDS) {
+    // Evict oldest entry
+    const oldestKey = processedEventIds.keys().next().value;
+    if (oldestKey) processedEventIds.delete(oldestKey);
+  }
+  processedEventIds.set(eventId, Date.now());
+  return true;
+}
 
 // Process incoming webhooks from all integrations
 // URL: /api/webhooks/[integrationId]?secret=[webhook_secret]
@@ -16,6 +34,29 @@ export async function POST(
   { params }: { params: Promise<{ integrationId: string }> }
 ) {
   const { integrationId } = await params;
+
+  // Rate limiting
+  const rl = rateLimitWebhook(request, `webhook-${integrationId}`);
+  if (!rl.success) {
+    return NextResponse.json({ error: "Too many requests" }, { status: 429 });
+  }
+
+  // Replay protection: check timestamp
+  const timestampHeader = request.headers.get("x-webhook-timestamp");
+  if (timestampHeader) {
+    const ts = parseInt(timestampHeader, 10);
+    const now = Math.floor(Date.now() / 1000);
+    if (isNaN(ts) || Math.abs(now - ts) > 300) {
+      return NextResponse.json({ error: "Webhook timestamp too old or invalid" }, { status: 400 });
+    }
+  }
+
+  // Replay protection: check event ID
+  const eventId = request.headers.get("x-webhook-event-id");
+  if (eventId && !trackEventId(eventId)) {
+    return NextResponse.json({ error: "Duplicate event" }, { status: 409 });
+  }
+
   const secret = request.nextUrl.searchParams.get("secret");
 
   if (!secret) {
@@ -37,11 +78,31 @@ export async function POST(
     return NextResponse.json({ error: "Invalid integration" }, { status: 401 });
   }
 
+  // HMAC verification if configured
+  const hmacSecret = (integration.config as Record<string, unknown>)?.hmac_secret as string | undefined;
+  const signatureHeader = request.headers.get("x-webhook-signature");
+  if (hmacSecret && signatureHeader) {
+    const rawBody = await request.clone().text();
+    const expectedSig = createHmac("sha256", hmacSecret).update(rawBody).digest("hex");
+    if (signatureHeader !== expectedSig) {
+      return NextResponse.json({ error: "Invalid HMAC signature" }, { status: 401 });
+    }
+  }
+
   let payload: Record<string, unknown>;
   try {
     payload = await request.json();
   } catch {
     return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
+  }
+
+  // Validate payload with Zod
+  const validation = webhookPayloadSchema.safeParse(payload);
+  if (!validation.success) {
+    return NextResponse.json(
+      { error: "Invalid payload", details: validation.error.issues },
+      { status: 400 }
+    );
   }
 
   const orgId = integration.organization_id;

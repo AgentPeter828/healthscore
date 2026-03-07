@@ -38,6 +38,7 @@ import {
   Mail,
   Check,
   AlertCircle,
+  ScrollText,
 } from "lucide-react";
 import { getInitials } from "@/lib/utils";
 
@@ -552,6 +553,8 @@ function NotificationsTab() {
   const [emailMedium, setEmailMedium] = useState(false);
   const [emailLow, setEmailLow] = useState(false);
   const [emailDigest, setEmailDigest] = useState(true);
+  const [digestFrequency, setDigestFrequency] = useState<"daily" | "weekly">("weekly");
+  const [userEmail, setUserEmail] = useState("");
   const [saved, setSaved] = useState(false);
   const [loading, setLoading] = useState(false);
   const [fetched, setFetched] = useState(false);
@@ -568,6 +571,8 @@ function NotificationsTab() {
         setEmailMedium(data.email_medium ?? false);
         setEmailLow(data.email_low ?? false);
         setEmailDigest(data.email_digest ?? true);
+        setDigestFrequency(data.digest_frequency ?? "weekly");
+        setUserEmail(data.user_email ?? "");
         setFetched(true);
       })
       .catch(() => setFetched(true));
@@ -586,6 +591,7 @@ function NotificationsTab() {
           email_medium: emailMedium,
           email_low: emailLow,
           email_digest: emailDigest,
+          digest_frequency: digestFrequency,
         }),
       });
       setSaved(true);
@@ -697,14 +703,55 @@ function NotificationsTab() {
 
         <Separator />
 
-        <div className="flex items-center justify-between">
-          <div>
-            <div className="text-sm font-medium text-foreground">Weekly digest</div>
-            <div className="text-xs text-muted-foreground">
-              Summary of portfolio health sent every Monday
+        {/* Email Digest */}
+        <div className="space-y-3">
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="text-sm font-medium text-foreground">Email Digest</div>
+              <div className="text-xs text-muted-foreground">
+                Summary of health changes, alerts, and renewals
+              </div>
             </div>
+            <Switch checked={emailDigest} onCheckedChange={setEmailDigest} />
           </div>
-          <Switch checked={emailDigest} onCheckedChange={setEmailDigest} />
+
+          {emailDigest && (
+            <>
+              <div className="flex items-center gap-3 pl-1">
+                <Label className="text-sm text-muted-foreground">Frequency:</Label>
+                <div className="flex items-center gap-1 bg-slate-100 rounded-lg p-0.5">
+                  <button
+                    type="button"
+                    onClick={() => setDigestFrequency("daily")}
+                    className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
+                      digestFrequency === "daily"
+                        ? "bg-white text-foreground shadow-sm"
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    Daily
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setDigestFrequency("weekly")}
+                    className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
+                      digestFrequency === "weekly"
+                        ? "bg-white text-foreground shadow-sm"
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    Weekly
+                  </button>
+                </div>
+              </div>
+              {userEmail && (
+                <p className="text-xs text-muted-foreground pl-1 flex items-center gap-1.5">
+                  <Mail className="w-3 h-3" />
+                  Email digest will be sent to {userEmail}
+                </p>
+              )}
+            </>
+          )}
         </div>
       </div>
 
@@ -712,6 +759,113 @@ function NotificationsTab() {
         {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : saved ? <Check className="w-4 h-4" /> : <Save className="w-4 h-4" />}
         {saved ? "Saved!" : "Save Preferences"}
       </Button>
+    </div>
+  );
+}
+
+// ─── Activity Log ─────────────────────────────────────────────
+
+interface AuditEntry {
+  id: string;
+  action: string;
+  details: Record<string, unknown>;
+  created_at: string;
+  user?: { full_name?: string; email?: string } | null;
+}
+
+function formatAction(action: string): string {
+  const labels: Record<string, string> = {
+    "formula.updated": "Updated health score formula",
+    "playbook.created": "Created playbook",
+    "playbook.updated": "Updated playbook",
+    "playbook.deleted": "Deleted playbook",
+    "integration.connected": "Connected integration",
+    "integration.disconnected": "Disconnected integration",
+    "account.created": "Created account",
+    "account.deleted": "Deleted account",
+    "account.exported": "Exported organization data",
+    "account.deletion_requested": "Requested account deletion",
+  };
+  return labels[action] ?? action;
+}
+
+function ActivityLogTab() {
+  const [entries, setEntries] = useState<AuditEntry[]>([]);
+  const [fetched, setFetched] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/settings/audit-log")
+      .then((r) => r.json())
+      .then((data) => {
+        setEntries(data.entries ?? []);
+        setFetched(true);
+      })
+      .catch(() => setFetched(true));
+  }, []);
+
+  if (!fetched) {
+    return (
+      <div className="flex items-center justify-center py-16">
+        <Loader2 className="w-5 h-5 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <h2 className="text-lg font-semibold text-foreground">Activity Log</h2>
+        <p className="text-sm text-muted-foreground mt-0.5">
+          Recent actions performed in your organization
+        </p>
+      </div>
+
+      {entries.length === 0 ? (
+        <p className="text-sm text-muted-foreground">No activity recorded yet.</p>
+      ) : (
+        <div className="bg-white rounded-xl border border-border overflow-hidden">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Action</TableHead>
+                <TableHead>User</TableHead>
+                <TableHead>Details</TableHead>
+                <TableHead>Date</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {entries.map((entry) => {
+                const user = Array.isArray(entry.user) ? entry.user[0] : entry.user;
+                return (
+                  <TableRow key={entry.id}>
+                    <TableCell className="font-medium text-sm">
+                      {formatAction(entry.action)}
+                    </TableCell>
+                    <TableCell className="text-sm text-muted-foreground">
+                      {user?.full_name ?? user?.email ?? "System"}
+                    </TableCell>
+                    <TableCell className="text-sm text-muted-foreground max-w-[200px] truncate">
+                      {Object.keys(entry.details).length > 0
+                        ? Object.entries(entry.details)
+                            .map(([k, v]) => `${k}: ${v}`)
+                            .join(", ")
+                        : "—"}
+                    </TableCell>
+                    <TableCell className="text-sm text-muted-foreground whitespace-nowrap">
+                      {new Date(entry.created_at).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </div>
+      )}
     </div>
   );
 }
@@ -750,6 +904,10 @@ export default function SettingsPage() {
             <Bell className="w-4 h-4" />
             Notifications
           </TabsTrigger>
+          <TabsTrigger value="activity" className="gap-1.5">
+            <ScrollText className="w-4 h-4" />
+            Activity Log
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="profile">
@@ -779,6 +937,12 @@ export default function SettingsPage() {
         <TabsContent value="notifications">
           <div className="bg-white rounded-xl border border-border p-6">
             <NotificationsTab />
+          </div>
+        </TabsContent>
+
+        <TabsContent value="activity">
+          <div className="bg-white rounded-xl border border-border p-6">
+            <ActivityLogTab />
           </div>
         </TabsContent>
       </Tabs>

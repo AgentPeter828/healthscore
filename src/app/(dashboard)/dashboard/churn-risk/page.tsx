@@ -227,7 +227,7 @@ export default async function ChurnRiskPage({ searchParams }: PageProps) {
         <div>
           <h1 className="text-2xl font-bold text-foreground">Churn Risk</h1>
           <p className="text-muted-foreground text-sm mt-0.5">
-            AI-powered churn predictions for your customer accounts
+            Predictive churn analysis for your customer accounts
           </p>
         </div>
         <div className="flex items-center gap-3 flex-wrap">
@@ -287,7 +287,7 @@ export default async function ChurnRiskPage({ searchParams }: PageProps) {
             <p className="text-sm text-muted-foreground mt-1">
               {params.risk
                 ? "Try selecting a different risk level"
-                : "All accounts appear healthy. Run AI Analysis to get the latest predictions."}
+                : "All accounts appear healthy. Run Analysis to get the latest predictions."}
             </p>
           </div>
         </div>

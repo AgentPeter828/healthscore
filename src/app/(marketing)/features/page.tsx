@@ -82,7 +82,7 @@ const features = [
       "Each at-risk account gets a churn risk label (Low / Medium / High / Critical) along with the specific signals driving that risk. Your team knows not just who is at risk, but exactly why — so they can have the right conversation.",
     ],
     benefits: [
-      "ML-powered churn risk labelling (Low / Medium / High / Critical)",
+      "Predictive churn risk labelling (Low / Medium / High / Critical)",
       "Leading indicator analysis across all connected data sources",
       "Risk driver explanations so CSMs know what to address",
       "Weekly at-risk account digest",
@@ -322,9 +322,10 @@ const features = [
   {
     icon: Mail,
     name: "Email Digest",
+    badge: "Coming Soon",
     description: [
-      "Your CS team receives a daily and weekly email digest summarising the health of your entire customer portfolio. No login required to stay up to date — the most important information comes to you.",
-      "The daily digest highlights accounts whose scores changed significantly overnight, any new Red accounts, and any accounts moving in the right direction after intervention. The weekly digest provides a broader portfolio view with trend charts and key metrics.",
+      "Your CS team will receive configurable email digests summarising the health of your entire customer portfolio. No login required to stay up to date — the most important information comes to you.",
+      "Digest options will include daily highlights (significant score changes, new Red accounts, successful interventions) and weekly portfolio summaries with trend data and key metrics.",
       "Digests can be configured per team member, so each CSM only sees the accounts they own. Managers can subscribe to portfolio-wide digests.",
     ],
     benefits: [
@@ -364,7 +365,7 @@ const features = [
   },
   {
     icon: Settings,
-    name: "CSM Workspaces",
+    name: "Account Management",
     description: [
       "Each Customer Success Manager on your team gets their own workspace inside HealthScore — a personalised view showing only the accounts they own, their own task list, alert inbox, and performance metrics.",
       "Managers get an additional portfolio view that shows all accounts and all CSMs, with the ability to reassign accounts, compare CSM performance, and see which team members have the most at-risk books.",
@@ -401,12 +402,12 @@ const features = [
     icon: Shield,
     name: "Data Privacy Controls",
     description: [
-      "HealthScore is built for global businesses. We comply with the Australian Privacy Act 1988, UK GDPR, Canadian PIPEDA, the New Zealand Privacy Act 2020, and the California Consumer Privacy Act (CCPA). Your customers' data is handled lawfully and transparently wherever they are.",
+      "HealthScore is built for global businesses. We build with privacy as a priority, following the principles of the Australian Privacy Act 1988, UK GDPR, Canadian PIPEDA, the New Zealand Privacy Act 2020, and the California Consumer Privacy Act (CCPA). Your customers' data is handled lawfully and transparently wherever they are.",
       "Granular data retention controls let you define exactly how long different categories of data are kept. All data is encrypted in transit and at rest. We use Supabase (PostgreSQL) for data storage with row-level security, ensuring complete tenant isolation.",
       "HealthScore undergoes regular security audits. We maintain a public security page with our policies and responsible disclosure contact. For enterprise customers, we can provide BAAs, data processing agreements, and custom data residency arrangements.",
     ],
     benefits: [
-      "GDPR, CCPA, Australian Privacy Act, PIPEDA and NZ Privacy Act compliant",
+      "Privacy-first architecture designed for GDPR, CCPA, Australian Privacy Act, PIPEDA and NZ Privacy Act",
       "Configurable data retention policies",
       "Encryption at rest and in transit",
       "Row-level security and full tenant data isolation",

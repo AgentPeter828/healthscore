@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { logAudit } from "@/lib/audit";
 
 export async function GET(request: NextRequest) {
   const supabase = await createClient();
@@ -99,6 +100,11 @@ export async function POST(request: NextRequest) {
     feature_adoption_score: 50,
     churn_risk: 0.3,
     churn_risk_label: "medium",
+  });
+
+  await logAudit(profile.organization_id, user.id, "account.created", {
+    account_id: account.id,
+    name: account.name,
   });
 
   return NextResponse.json(account);

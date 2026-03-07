@@ -9,6 +9,7 @@ import {
   getSegmentBadgeClass,
 } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -371,14 +372,21 @@ function EmptyState({
         <h3 className="font-semibold text-foreground">
           {isFiltered ? "No accounts match your filters" : "No accounts yet"}
         </h3>
-        <p className="text-sm text-muted-foreground mt-1">
+        <p className="text-sm text-muted-foreground mt-1 max-w-sm">
           {isFiltered
             ? "Try adjusting your search or segment filters"
-            : "Add your first customer account to get started"}
+            : "No accounts yet. Connect an integration to start tracking customer health."}
         </p>
       </div>
       {!isFiltered && (
-        <AddAccountButton />
+        <div className="flex items-center gap-3">
+          <Link href="/dashboard/integrations">
+            <Button variant="outline" size="sm">
+              Connect Integration
+            </Button>
+          </Link>
+          <AddAccountButton />
+        </div>
       )}
     </div>
   );

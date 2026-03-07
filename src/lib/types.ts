@@ -335,6 +335,17 @@ export interface Note {
   author?: Profile;
 }
 
+export interface AuditLogEntry {
+  id: string;
+  organization_id: string;
+  user_id: string;
+  action: string;
+  details: Record<string, unknown>;
+  created_at: string;
+  // Joined
+  user?: Profile;
+}
+
 // ============================================================
 // Dashboard / UI Types
 // ============================================================

@@ -73,7 +73,7 @@ export function RunAIAnalysisButton() {
         ) : (
           <>
             <Sparkles className="w-4 h-4" />
-            Run AI Analysis
+            Run Analysis
           </>
         )}
       </Button>

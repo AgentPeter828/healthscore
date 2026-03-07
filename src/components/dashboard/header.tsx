@@ -3,8 +3,9 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { Bell, Search, LogOut, Settings, User } from "lucide-react";
+import { Bell, LogOut, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { GlobalSearch } from "@/components/dashboard/global-search";
 
 interface HeaderProps {
   profile: {
@@ -28,14 +29,7 @@ export function DashboardHeader({ profile }: HeaderProps) {
   return (
     <header className="bg-white border-b border-border px-6 py-3 flex items-center justify-between flex-shrink-0">
       {/* Search */}
-      <div className="relative flex-1 max-w-xs">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-        <input
-          type="text"
-          placeholder="Search accounts..."
-          className="w-full pl-9 pr-4 py-2 text-sm bg-slate-50 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
-        />
-      </div>
+      <GlobalSearch />
 
       {/* Right actions */}
       <div className="flex items-center gap-2">

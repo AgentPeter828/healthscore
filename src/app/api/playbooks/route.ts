@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { logAudit } from "@/lib/audit";
 
 export async function GET() {
   const supabase = await createClient();
@@ -74,6 +75,11 @@ export async function POST(request: NextRequest) {
     await supabase.from("hs_playbook_actions").insert(actionInserts);
   }
 
+  await logAudit(profile.organization_id, user.id, "playbook.created", {
+    playbook_id: playbook.id,
+    name,
+  });
+
   return NextResponse.json(playbook);
 }
 
@@ -113,6 +119,12 @@ export async function PUT(request: NextRequest) {
     }
   }
 
+  if (profile?.organization_id) {
+    await logAudit(profile.organization_id, user.id, "playbook.updated", {
+      playbook_id: id,
+    });
+  }
+
   return NextResponse.json(playbook);
 }
 
@@ -131,6 +143,12 @@ export async function DELETE(request: NextRequest) {
     .delete()
     .eq("id", id)
     .eq("organization_id", profile?.organization_id);
+
+  if (profile?.organization_id) {
+    await logAudit(profile.organization_id, user.id, "playbook.deleted", {
+      playbook_id: id,
+    });
+  }
 
   return NextResponse.json({ success: true });
 }

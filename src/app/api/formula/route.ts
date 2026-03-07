@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { formulaUpdateSchema, validateFormulaWeights } from "@/lib/validators";
+import { logAudit } from "@/lib/audit";
 
 export async function GET() {
   const supabase = await createClient();
@@ -45,16 +47,22 @@ export async function POST(request: NextRequest) {
   if (!profile?.organization_id) return NextResponse.json({ error: "No org" }, { status: 400 });
 
   const body = await request.json();
-  const { components, thresholds, name } = body;
 
-  // Validate weights sum to 100
-  const enabledComponents = components.filter((c: { enabled: boolean }) => c.enabled);
-  const totalWeight = enabledComponents.reduce((sum: number, c: { weight: number }) => sum + c.weight, 0);
-  if (Math.abs(totalWeight - 100) > 1) {
+  // Validate with Zod
+  const parsed = formulaUpdateSchema.safeParse(body);
+  if (!parsed.success) {
     return NextResponse.json(
-      { error: `Component weights must sum to 100 (current: ${totalWeight})` },
+      { error: "Invalid formula data", details: parsed.error.issues },
       { status: 400 }
     );
+  }
+
+  const { components, thresholds, name } = parsed.data;
+
+  // Server-side weight validation: all >= 0, enabled sum to 100
+  const weightCheck = validateFormulaWeights(components);
+  if (!weightCheck.valid) {
+    return NextResponse.json({ error: weightCheck.error }, { status: 400 });
   }
 
   // Deactivate existing formula and create new version
@@ -87,6 +95,11 @@ export async function POST(request: NextRequest) {
     .single();
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+
+  await logAudit(profile.organization_id, user.id, "formula.updated", {
+    version: formula?.version,
+    component_count: components.length,
+  });
 
   return NextResponse.json(formula);
 }

@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { formatDate } from "@/lib/utils";
 import { Alert, AlertSeverity } from "@/lib/types";
 import Link from "next/link";
-import { Bell, BellOff, AlertTriangle, CheckCheck, Circle } from "lucide-react";
+import { Bell, BellOff, CheckCircle, CheckCheck, Circle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
@@ -169,13 +169,25 @@ export default async function AlertsPage({
       {/* Alert list */}
       {filteredAlerts.length === 0 ? (
         <div className="bg-white rounded-xl border border-border p-16 text-center">
-          <BellOff className="w-12 h-12 mx-auto mb-4 text-slate-300" />
-          <h3 className="text-lg font-semibold text-foreground mb-1">No alerts</h3>
-          <p className="text-sm text-muted-foreground">
-            {activeFilter === "unread"
-              ? "You're all caught up! No unread alerts."
-              : "No alerts match this filter."}
-          </p>
+          {typedAlerts.length === 0 ? (
+            <>
+              <CheckCircle className="w-12 h-12 mx-auto mb-4 text-green-400" />
+              <h3 className="text-lg font-semibold text-foreground mb-1">No alerts</h3>
+              <p className="text-sm text-muted-foreground">
+                Your customers are looking healthy!
+              </p>
+            </>
+          ) : (
+            <>
+              <BellOff className="w-12 h-12 mx-auto mb-4 text-slate-300" />
+              <h3 className="text-lg font-semibold text-foreground mb-1">No alerts</h3>
+              <p className="text-sm text-muted-foreground">
+                {activeFilter === "unread"
+                  ? "You're all caught up! No unread alerts."
+                  : "No alerts match this filter."}
+              </p>
+            </>
+          )}
         </div>
       ) : (
         <div className="space-y-4">

@@ -1,9 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
 import { stripe, getPlanFromPriceId, PLANS } from "@/lib/stripe";
 import { createServiceClient } from "@/lib/supabase/server";
+import { rateLimitWebhook, getClientIp } from "@/lib/rate-limit";
 import Stripe from "stripe";
 
 export async function POST(request: NextRequest) {
+  // Rate limiting
+  const rl = rateLimitWebhook(request, "billing-webhook");
+  if (!rl.success) {
+    return NextResponse.json({ error: "Too many requests" }, { status: 429 });
+  }
+
+  // Verify STRIPE_WEBHOOK_SECRET is configured
+  if (!process.env.STRIPE_WEBHOOK_SECRET) {
+    console.error("STRIPE_WEBHOOK_SECRET is not configured");
+    return NextResponse.json({ error: "Webhook not configured" }, { status: 500 });
+  }
+
   const body = await request.text();
   const sig = request.headers.get("stripe-signature");
 
@@ -14,7 +27,7 @@ export async function POST(request: NextRequest) {
     event = stripe.webhooks.constructEvent(
       body,
       sig,
-      process.env.STRIPE_WEBHOOK_SECRET!
+      process.env.STRIPE_WEBHOOK_SECRET
     );
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error";
