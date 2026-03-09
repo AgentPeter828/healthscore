@@ -102,24 +102,24 @@ export default function SignupPage() {
 
   if (success) {
     return (
-      <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
         <div className="w-full max-w-md text-center">
           <div className="flex items-center justify-center gap-2 mb-8">
             <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
               <Activity className="w-5 h-5 text-white" />
             </div>
-            <span className="text-white font-bold text-xl">HealthScore</span>
+            <span className="text-gray-900 font-bold text-xl">HealthScore</span>
           </div>
-          <Card className="border-slate-800 bg-slate-900">
+          <Card className="border-gray-200 bg-white shadow-sm">
             <CardContent className="pt-8 pb-8 space-y-4">
-              <CheckCircle className="w-16 h-16 text-green-400 mx-auto" />
-              <h2 className="text-xl font-bold text-white">Check your email</h2>
-              <p className="text-slate-400">
+              <CheckCircle className="w-16 h-16 text-green-500 mx-auto" />
+              <h2 className="text-xl font-bold text-gray-900">Check your email</h2>
+              <p className="text-gray-500">
                 We sent a confirmation link to{" "}
-                <strong className="text-white">{email}</strong>. Click it to
+                <strong className="text-gray-900">{email}</strong>. Click it to
                 activate your account and get started.
               </p>
-              <p className="text-slate-500 text-sm">
+              <p className="text-gray-400 text-sm">
                 Didn&apos;t get it? Check your spam folder.
               </p>
             </CardContent>
@@ -130,34 +130,34 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="flex items-center justify-center gap-2 mb-8">
           <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
             <Activity className="w-5 h-5 text-white" />
           </div>
-          <span className="text-white font-bold text-xl">HealthScore</span>
+          <span className="text-gray-900 font-bold text-xl">HealthScore</span>
         </div>
 
         {planParam && (
-          <div className="mb-4 p-3 bg-blue-950 border border-blue-800 rounded-lg text-center text-blue-300 text-sm">
+          <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg text-center text-blue-700 text-sm">
             You selected: <strong>{PLAN_NAMES[planParam] || planParam}</strong>
             {" — "}you can update billing after signup.
           </div>
         )}
 
-        <Card className="border-slate-800 bg-slate-900 text-white">
+        <Card className="border-gray-200 bg-white shadow-sm">
           <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl text-white">
+            <CardTitle className="text-2xl text-gray-900">
               Start for free
             </CardTitle>
-            <CardDescription className="text-slate-400">
+            <CardDescription className="text-gray-500">
               Set up customer health scoring in 5 minutes
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             {error && (
-              <Alert className="border-red-800 bg-red-950 text-red-300 text-sm p-3">
+              <Alert className="border-red-200 bg-red-50 text-red-700 text-sm p-3">
                 {error}
               </Alert>
             )}
@@ -165,7 +165,7 @@ export default function SignupPage() {
             <Button
               type="button"
               variant="outline"
-              className="w-full border-slate-700 bg-slate-800 text-white hover:bg-slate-700"
+              className="w-full border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
               onClick={handleGoogleSignup}
               disabled={loading}
             >
@@ -175,10 +175,10 @@ export default function SignupPage() {
 
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t border-slate-700" />
+                <span className="w-full border-t border-gray-200" />
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-slate-900 px-2 text-slate-500">
+                <span className="bg-white px-2 text-gray-500">
                   Or sign up with email
                 </span>
               </div>
@@ -187,7 +187,7 @@ export default function SignupPage() {
             <form onSubmit={handleSignup} className="space-y-4">
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-2">
-                  <Label htmlFor="name" className="text-slate-300">
+                  <Label htmlFor="name" className="text-gray-700">
                     Full name
                   </Label>
                   <Input
@@ -197,11 +197,11 @@ export default function SignupPage() {
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
                     required
-                    className="bg-slate-800 border-slate-700 text-white placeholder:text-slate-500"
+                    className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="org" className="text-slate-300">
+                  <Label htmlFor="org" className="text-gray-700">
                     Company name
                   </Label>
                   <Input
@@ -211,12 +211,12 @@ export default function SignupPage() {
                     value={orgName}
                     onChange={(e) => setOrgName(e.target.value)}
                     required
-                    className="bg-slate-800 border-slate-700 text-white placeholder:text-slate-500"
+                    className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400"
                   />
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-slate-300">
+                <Label htmlFor="email" className="text-gray-700">
                   Work email
                 </Label>
                 <Input
@@ -226,11 +226,11 @@ export default function SignupPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="bg-slate-800 border-slate-700 text-white placeholder:text-slate-500"
+                  className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400"
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="password" className="text-slate-300">
+                <Label htmlFor="password" className="text-gray-700">
                   Password
                 </Label>
                 <Input
@@ -241,7 +241,7 @@ export default function SignupPage() {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   minLength={8}
-                  className="bg-slate-800 border-slate-700 text-white placeholder:text-slate-500"
+                  className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400"
                 />
               </div>
               <Button
@@ -254,11 +254,11 @@ export default function SignupPage() {
             </form>
           </CardContent>
           <CardFooter>
-            <p className="text-sm text-slate-400 w-full text-center">
+            <p className="text-sm text-gray-500 w-full text-center">
               Already have an account?{" "}
               <Link
                 href="/login"
-                className="text-blue-400 hover:text-blue-300 font-medium"
+                className="text-blue-600 hover:text-blue-500 font-medium"
               >
                 Sign in
               </Link>
@@ -266,19 +266,19 @@ export default function SignupPage() {
           </CardFooter>
         </Card>
 
-        <div className="flex items-center justify-center gap-4 mt-4 text-xs text-slate-600">
+        <div className="flex items-center justify-center gap-4 mt-4 text-xs text-gray-500">
           <span>✓ No credit card required</span>
           <span>✓ Free forever plan</span>
           <span>✓ Cancel anytime</span>
         </div>
 
-        <p className="text-center text-xs text-slate-600 mt-4">
+        <p className="text-center text-xs text-gray-400 mt-4">
           By creating an account, you agree to our{" "}
-          <Link href="/terms" className="underline">
+          <Link href="/terms" className="underline hover:text-gray-600">
             Terms
           </Link>{" "}
           and{" "}
-          <Link href="/privacy" className="underline">
+          <Link href="/privacy" className="underline hover:text-gray-600">
             Privacy Policy
           </Link>
         </p>

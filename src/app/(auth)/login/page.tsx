@@ -50,26 +50,26 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="flex items-center justify-center gap-2 mb-8">
           <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
             <Activity className="w-5 h-5 text-white" />
           </div>
-          <span className="text-white font-bold text-xl">HealthScore</span>
+          <span className="text-gray-900 font-bold text-xl">HealthScore</span>
         </div>
 
-        <Card className="border-slate-800 bg-slate-900 text-white">
+        <Card className="border-gray-200 bg-white shadow-sm">
           <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl text-white">Welcome back</CardTitle>
-            <CardDescription className="text-slate-400">
+            <CardTitle className="text-2xl text-gray-900">Welcome back</CardTitle>
+            <CardDescription className="text-gray-500">
               Sign in to your HealthScore account
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             {error && (
-              <Alert className="border-red-800 bg-red-950 text-red-300 text-sm p-3">
+              <Alert className="border-red-200 bg-red-50 text-red-700 text-sm p-3">
                 {error}
               </Alert>
             )}
@@ -77,7 +77,7 @@ export default function LoginPage() {
             <Button
               type="button"
               variant="outline"
-              className="w-full border-slate-700 bg-slate-800 text-white hover:bg-slate-700"
+              className="w-full border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
               onClick={handleGoogleLogin}
               disabled={loading}
             >
@@ -87,10 +87,10 @@ export default function LoginPage() {
 
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t border-slate-700" />
+                <span className="w-full border-t border-gray-200" />
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-slate-900 px-2 text-slate-500">
+                <span className="bg-white px-2 text-gray-500">
                   Or continue with email
                 </span>
               </div>
@@ -98,7 +98,7 @@ export default function LoginPage() {
 
             <form onSubmit={handleLogin} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-slate-300">
+                <Label htmlFor="email" className="text-gray-700">
                   Email
                 </Label>
                 <Input
@@ -108,17 +108,17 @@ export default function LoginPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="bg-slate-800 border-slate-700 text-white placeholder:text-slate-500"
+                  className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400"
                 />
               </div>
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <Label htmlFor="password" className="text-slate-300">
+                  <Label htmlFor="password" className="text-gray-700">
                     Password
                   </Label>
                   <Link
                     href="/forgot-password"
-                    className="text-xs text-blue-400 hover:text-blue-300"
+                    className="text-xs text-blue-600 hover:text-blue-500"
                   >
                     Forgot password?
                   </Link>
@@ -130,7 +130,7 @@ export default function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="bg-slate-800 border-slate-700 text-white placeholder:text-slate-500"
+                  className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400"
                 />
               </div>
               <Button
@@ -143,11 +143,11 @@ export default function LoginPage() {
             </form>
           </CardContent>
           <CardFooter>
-            <p className="text-sm text-slate-400 w-full text-center">
+            <p className="text-sm text-gray-500 w-full text-center">
               Don&apos;t have an account?{" "}
               <Link
                 href="/signup"
-                className="text-blue-400 hover:text-blue-300 font-medium"
+                className="text-blue-600 hover:text-blue-500 font-medium"
               >
                 Start for free
               </Link>
@@ -155,13 +155,13 @@ export default function LoginPage() {
           </CardFooter>
         </Card>
 
-        <p className="text-center text-xs text-slate-600 mt-6">
+        <p className="text-center text-xs text-gray-400 mt-6">
           By signing in, you agree to our{" "}
-          <Link href="/terms" className="underline">
+          <Link href="/terms" className="underline hover:text-gray-600">
             Terms
           </Link>{" "}
           and{" "}
-          <Link href="/privacy" className="underline">
+          <Link href="/privacy" className="underline hover:text-gray-600">
             Privacy Policy
           </Link>
         </p>

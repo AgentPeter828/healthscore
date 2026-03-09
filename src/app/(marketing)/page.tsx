@@ -143,19 +143,19 @@ export default function HomePage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-blue-950 text-white">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(99,102,241,0.15),transparent_60%)]" />
+      <section className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(99,102,241,0.08),transparent_60%)]" />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-24 md:py-32">
           <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-1.5 text-sm text-blue-300 mb-8">
-              <span className="h-2 w-2 rounded-full bg-blue-400 animate-pulse" />
+            <div className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-4 py-1.5 text-sm text-blue-700 mb-8">
+              <span className="h-2 w-2 rounded-full bg-blue-500 animate-pulse" />
               Customer health scoring for SaaS teams
             </div>
-            <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl leading-tight">
+            <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl leading-tight text-gray-900">
               Know which customers are about to churn{" "}
-              <span className="text-blue-400">— before they do</span>
+              <span className="text-blue-600">— before they do</span>
             </h1>
-            <p className="mt-6 text-xl text-slate-300 leading-relaxed max-w-2xl">
+            <p className="mt-6 text-xl text-gray-600 leading-relaxed max-w-2xl">
               HealthScore gives you instant visibility into every account.
               Connect your data, get health scores, stop churn.
             </p>
@@ -168,7 +168,7 @@ export default function HomePage() {
               </Link>
               <Link
                 href="/features"
-                className="rounded-lg border border-white/20 bg-white/10 px-6 py-3 text-base font-semibold text-white hover:bg-white/20 transition-colors"
+                className="rounded-lg border border-gray-300 bg-white px-6 py-3 text-base font-semibold text-gray-700 hover:bg-gray-50 transition-colors"
               >
                 See how it works
               </Link>
@@ -176,28 +176,28 @@ export default function HomePage() {
           </div>
 
           {/* Dashboard mockup */}
-          <div className="mt-16 rounded-2xl border border-white/10 bg-slate-800/80 backdrop-blur p-6 shadow-2xl max-w-4xl">
+          <div className="mt-16 rounded-2xl border border-gray-200 bg-white p-6 shadow-xl max-w-4xl">
             <div className="flex items-center gap-2 mb-6">
-              <div className="h-3 w-3 rounded-full bg-red-500" />
-              <div className="h-3 w-3 rounded-full bg-yellow-500" />
-              <div className="h-3 w-3 rounded-full bg-green-500" />
-              <span className="ml-2 text-xs text-slate-400">HealthScore Dashboard</span>
+              <div className="h-3 w-3 rounded-full bg-red-400" />
+              <div className="h-3 w-3 rounded-full bg-yellow-400" />
+              <div className="h-3 w-3 rounded-full bg-green-400" />
+              <span className="ml-2 text-xs text-gray-400">HealthScore Dashboard</span>
             </div>
             <div className="grid grid-cols-3 gap-4 mb-6">
-              <div className="rounded-lg bg-slate-700/60 p-4">
-                <p className="text-xs text-slate-400 mb-1">Avg Health Score</p>
-                <p className="text-2xl font-bold text-green-400">74</p>
-                <p className="text-xs text-green-400 mt-1">+3 this week</p>
+              <div className="rounded-lg bg-gray-50 p-4">
+                <p className="text-xs text-gray-500 mb-1">Avg Health Score</p>
+                <p className="text-2xl font-bold text-green-600">74</p>
+                <p className="text-xs text-green-600 mt-1">+3 this week</p>
               </div>
-              <div className="rounded-lg bg-slate-700/60 p-4">
-                <p className="text-xs text-slate-400 mb-1">At Risk Accounts</p>
-                <p className="text-2xl font-bold text-yellow-400">12</p>
-                <p className="text-xs text-yellow-400 mt-1">Needs attention</p>
+              <div className="rounded-lg bg-gray-50 p-4">
+                <p className="text-xs text-gray-500 mb-1">At Risk Accounts</p>
+                <p className="text-2xl font-bold text-yellow-600">12</p>
+                <p className="text-xs text-yellow-600 mt-1">Needs attention</p>
               </div>
-              <div className="rounded-lg bg-slate-700/60 p-4">
-                <p className="text-xs text-slate-400 mb-1">Critical</p>
-                <p className="text-2xl font-bold text-red-400">3</p>
-                <p className="text-xs text-red-400 mt-1">Churn risk high</p>
+              <div className="rounded-lg bg-gray-50 p-4">
+                <p className="text-xs text-gray-500 mb-1">Critical</p>
+                <p className="text-2xl font-bold text-red-600">3</p>
+                <p className="text-xs text-red-600 mt-1">Churn risk high</p>
               </div>
             </div>
             <div className="space-y-2">
@@ -209,26 +209,26 @@ export default function HomePage() {
               ].map((account) => (
                 <div
                   key={account.name}
-                  className="flex items-center justify-between rounded-lg bg-slate-700/40 px-4 py-2.5"
+                  className="flex items-center justify-between rounded-lg bg-gray-50 px-4 py-2.5"
                 >
-                  <span className="text-sm text-slate-200">{account.name}</span>
+                  <span className="text-sm text-gray-700">{account.name}</span>
                   <div className="flex items-center gap-3">
-                    <div className="w-24 h-2 rounded-full bg-slate-600">
+                    <div className="w-24 h-2 rounded-full bg-gray-200">
                       <div
                         className={`h-2 rounded-full ${account.color}`}
                         style={{ width: `${account.score}%` }}
                       />
                     </div>
-                    <span className="text-sm font-semibold text-slate-200 w-6 text-right">
+                    <span className="text-sm font-semibold text-gray-700 w-6 text-right">
                       {account.score}
                     </span>
                     <span
                       className={`text-xs px-2 py-0.5 rounded-full font-medium ${
                         account.status === "Healthy"
-                          ? "bg-green-900/50 text-green-400"
+                          ? "bg-green-100 text-green-700"
                           : account.status === "At Risk"
-                          ? "bg-yellow-900/50 text-yellow-400"
-                          : "bg-red-900/50 text-red-400"
+                          ? "bg-yellow-100 text-yellow-700"
+                          : "bg-red-100 text-red-700"
                       }`}
                     >
                       {account.status}

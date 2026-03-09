@@ -141,12 +141,12 @@ export default function PricingPage() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-gradient-to-br from-slate-900 to-blue-950 text-white py-20">
+      <section className="bg-gradient-to-br from-blue-50 via-white to-indigo-50 py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl font-extrabold sm:text-5xl">
+          <h1 className="text-4xl font-extrabold sm:text-5xl text-gray-900">
             Simple, transparent pricing
           </h1>
-          <p className="mt-4 text-xl text-slate-300">
+          <p className="mt-4 text-xl text-gray-600">
             Start free. No credit card required. Scale when you&apos;re ready.
           </p>
 
@@ -155,7 +155,7 @@ export default function PricingPage() {
             <span
               className={cn(
                 "text-sm font-medium",
-                !annual ? "text-white" : "text-slate-400"
+                !annual ? "text-gray-900" : "text-gray-400"
               )}
             >
               Monthly
@@ -164,13 +164,13 @@ export default function PricingPage() {
               onClick={() => setAnnual(!annual)}
               className={cn(
                 "relative inline-flex h-6 w-12 items-center rounded-full transition-colors",
-                annual ? "bg-blue-500" : "bg-slate-600"
+                annual ? "bg-blue-500" : "bg-gray-300"
               )}
               aria-label="Toggle annual billing"
             >
               <span
                 className={cn(
-                  "inline-block h-5 w-5 transform rounded-full bg-white transition-transform",
+                  "inline-block h-5 w-5 transform rounded-full bg-white transition-transform shadow-sm",
                   annual ? "translate-x-6" : "translate-x-1"
                 )}
               />
@@ -178,17 +178,17 @@ export default function PricingPage() {
             <span
               className={cn(
                 "text-sm font-medium",
-                annual ? "text-white" : "text-slate-400"
+                annual ? "text-gray-900" : "text-gray-400"
               )}
             >
               Annual
-              <span className="ml-2 inline-flex items-center rounded-full bg-amber-400/20 px-2 py-0.5 text-xs font-medium text-amber-300">
+              <span className="ml-2 inline-flex items-center rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-700">
                 Coming soon
               </span>
             </span>
           </div>
           {annual && (
-            <p className="mt-3 text-sm text-amber-300">
+            <p className="mt-3 text-sm text-amber-600">
               Annual billing (20% savings) is coming soon. Monthly pricing shown.
             </p>
           )}

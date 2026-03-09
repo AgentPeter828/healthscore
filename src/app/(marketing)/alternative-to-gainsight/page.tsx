@@ -61,16 +61,16 @@ export default function AlternativeToGainsightPage() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-gradient-to-br from-slate-900 to-blue-950 text-white py-20">
+      <section className="bg-gradient-to-br from-blue-50 via-white to-indigo-50 py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-1.5 text-sm text-blue-300 mb-6">
+            <div className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-4 py-1.5 text-sm text-blue-700 mb-6">
               Comparison
             </div>
-            <h1 className="text-4xl font-extrabold sm:text-5xl leading-tight">
+            <h1 className="text-4xl font-extrabold sm:text-5xl leading-tight text-gray-900">
               HealthScore vs Gainsight
             </h1>
-            <p className="mt-6 text-xl text-slate-300">
+            <p className="mt-6 text-xl text-gray-600">
               Gainsight is the industry standard for enterprise CS teams — but it&apos;s complex, expensive, and takes months to implement. HealthScore gives you 80% of the value in 5 minutes at a fraction of the cost.
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
@@ -82,7 +82,7 @@ export default function AlternativeToGainsightPage() {
               </Link>
               <Link
                 href="/pricing"
-                className="rounded-lg border border-white/20 bg-white/10 px-6 py-3 text-base font-semibold text-white hover:bg-white/20 transition-colors"
+                className="rounded-lg border border-gray-300 bg-white px-6 py-3 text-base font-semibold text-gray-700 hover:bg-gray-50 transition-colors"
               >
                 See our pricing
               </Link>

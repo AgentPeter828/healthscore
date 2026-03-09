@@ -58,16 +58,16 @@ export default function AlternativeToChurnZeroPage() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-gradient-to-br from-slate-900 to-blue-950 text-white py-20">
+      <section className="bg-gradient-to-br from-blue-50 via-white to-indigo-50 py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-1.5 text-sm text-blue-300 mb-6">
+            <div className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-4 py-1.5 text-sm text-blue-700 mb-6">
               Comparison
             </div>
-            <h1 className="text-4xl font-extrabold sm:text-5xl leading-tight">
+            <h1 className="text-4xl font-extrabold sm:text-5xl leading-tight text-gray-900">
               HealthScore vs ChurnZero
             </h1>
-            <p className="mt-6 text-xl text-slate-300">
+            <p className="mt-6 text-xl text-gray-600">
               ChurnZero is powerful — but complex and expensive. HealthScore gives you the health scoring and churn prediction you actually need, at a price you can justify, without a 6-week implementation.
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
@@ -79,7 +79,7 @@ export default function AlternativeToChurnZeroPage() {
               </Link>
               <Link
                 href="/pricing"
-                className="rounded-lg border border-white/20 bg-white/10 px-6 py-3 text-base font-semibold text-white hover:bg-white/20 transition-colors"
+                className="rounded-lg border border-gray-300 bg-white px-6 py-3 text-base font-semibold text-gray-700 hover:bg-gray-50 transition-colors"
               >
                 See our pricing
               </Link>

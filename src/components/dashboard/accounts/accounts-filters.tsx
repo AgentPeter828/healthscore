@@ -113,8 +113,8 @@ export function AccountsFilters() {
                   ? "bg-yellow-100 border-yellow-300 text-yellow-800"
                   : f.value === "red"
                   ? "bg-red-100 border-red-300 text-red-800"
-                  : "bg-slate-800 border-slate-800 text-white"
-                : "bg-white border-border text-muted-foreground hover:bg-slate-50"
+                  : "bg-gray-900 border-gray-900 text-white"
+                : "bg-white border-border text-muted-foreground hover:bg-gray-50"
             )}
           >
             {f.label}

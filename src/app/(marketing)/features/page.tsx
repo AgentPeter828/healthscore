@@ -451,12 +451,12 @@ export default function FeaturesPage() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-gradient-to-br from-slate-900 to-blue-950 text-white py-20">
+      <section className="bg-gradient-to-br from-blue-50 via-white to-indigo-50 py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl font-extrabold sm:text-5xl">
+          <h1 className="text-4xl font-extrabold sm:text-5xl text-gray-900">
             Everything you need to stop churn
           </h1>
-          <p className="mt-6 text-xl text-slate-300 max-w-2xl mx-auto">
+          <p className="mt-6 text-xl text-gray-600 max-w-2xl mx-auto">
             HealthScore brings together real-time health scoring, churn prediction, automated alerts, and playbooks in one platform built for Customer Success teams.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
@@ -468,7 +468,7 @@ export default function FeaturesPage() {
             </Link>
             <Link
               href="/pricing"
-              className="rounded-lg border border-white/20 bg-white/10 px-6 py-3 text-base font-semibold text-white hover:bg-white/20 transition-colors"
+              className="rounded-lg border border-gray-300 bg-white px-6 py-3 text-base font-semibold text-gray-700 hover:bg-gray-50 transition-colors"
             >
               See pricing
             </Link>

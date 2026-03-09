@@ -34,7 +34,7 @@ export function ChurnRiskFilters({ currentRisk }: Props) {
   const buttonStyle = (value: string) => {
     const isActive = currentRisk === value;
     if (!isActive) {
-      return "bg-white border-border text-muted-foreground hover:bg-slate-50";
+      return "bg-white border-border text-muted-foreground hover:bg-gray-50";
     }
     switch (value) {
       case "critical":
@@ -46,7 +46,7 @@ export function ChurnRiskFilters({ currentRisk }: Props) {
       case "low":
         return "bg-green-100 border-green-300 text-green-800";
       default:
-        return "bg-slate-800 border-slate-800 text-white";
+        return "bg-gray-900 border-gray-900 text-white";
     }
   };
 

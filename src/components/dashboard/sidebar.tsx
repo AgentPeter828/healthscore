@@ -91,33 +91,33 @@ export function DashboardSidebar({ profile }: SidebarProps) {
   const planName = profile?.organization?.plan || "free";
 
   return (
-    <aside className="w-60 flex-shrink-0 bg-sidebar flex flex-col border-r border-sidebar-border">
+    <aside className="w-60 flex-shrink-0 bg-white flex flex-col border-r border-gray-200">
       {/* Logo */}
-      <div className="flex items-center gap-2.5 px-4 py-5 border-b border-sidebar-border">
+      <div className="flex items-center gap-2.5 px-4 py-5 border-b border-gray-200">
         <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
           <Activity className="w-5 h-5 text-white" />
         </div>
-        <span className="text-white font-bold text-lg tracking-tight">
+        <span className="text-gray-900 font-bold text-lg tracking-tight">
           HealthScore
         </span>
       </div>
 
       {/* Org selector */}
-      <div className="px-3 py-2 border-b border-sidebar-border">
-        <button className="w-full flex items-center gap-2 px-2 py-2 rounded-md hover:bg-sidebar-accent text-sidebar-foreground transition-colors">
+      <div className="px-3 py-2 border-b border-gray-200">
+        <button className="w-full flex items-center gap-2 px-2 py-2 rounded-md hover:bg-gray-100 text-gray-900 transition-colors">
           <div className="w-6 h-6 bg-blue-500 rounded-md flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
             {profile?.organization?.name?.[0]?.toUpperCase() || "O"}
           </div>
           <div className="flex-1 text-left min-w-0">
-            <div className="text-sm font-medium text-white truncate">
+            <div className="text-sm font-medium text-gray-900 truncate">
               {profile?.organization?.name || "My Organization"}
             </div>
-            <div className="text-xs text-slate-400 capitalize flex items-center gap-1">
-              {planName === "scale" && <Crown className="w-3 h-3 text-yellow-400" />}
+            <div className="text-xs text-gray-500 capitalize flex items-center gap-1">
+              {planName === "scale" && <Crown className="w-3 h-3 text-yellow-500" />}
               {planName} plan
             </div>
           </div>
-          <ChevronDown className="w-4 h-4 text-slate-500" />
+          <ChevronDown className="w-4 h-4 text-gray-400" />
         </button>
       </div>
 
@@ -126,7 +126,7 @@ export function DashboardSidebar({ profile }: SidebarProps) {
         {NAV_ITEMS.map((item) => (
           <div key={item.href}>
             {item.dividerBefore && (
-              <div className="border-t border-sidebar-border my-2" />
+              <div className="border-t border-gray-200 my-2" />
             )}
             <Link
               href={item.href}
@@ -134,7 +134,7 @@ export function DashboardSidebar({ profile }: SidebarProps) {
                 "flex items-center gap-2.5 px-2.5 py-2 rounded-md text-sm font-medium transition-colors",
                 isActive(item.href, item.exact)
                   ? "bg-blue-600 text-white"
-                  : "text-slate-300 hover:bg-sidebar-accent hover:text-white"
+                  : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
               )}
             >
               <item.icon className="w-4 h-4 flex-shrink-0" />
@@ -147,11 +147,11 @@ export function DashboardSidebar({ profile }: SidebarProps) {
       {/* Upgrade prompt (for free plan) */}
       {planName === "free" && (
         <div className="px-3 pb-3">
-          <div className="bg-blue-950 border border-blue-800 rounded-lg p-3">
-            <p className="text-xs text-blue-300 font-medium mb-1">
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+            <p className="text-xs text-blue-700 font-medium mb-1">
               Upgrade to Starter
             </p>
-            <p className="text-xs text-blue-400 mb-2">
+            <p className="text-xs text-blue-600 mb-2">
               Get AI predictions, Slack alerts, and 500 accounts.
             </p>
             <Link
@@ -165,21 +165,21 @@ export function DashboardSidebar({ profile }: SidebarProps) {
       )}
 
       {/* User profile */}
-      <div className="px-3 pb-3 border-t border-sidebar-border pt-3">
+      <div className="px-3 pb-3 border-t border-gray-200 pt-3">
         <Link
           href="/dashboard/settings/profile"
-          className="flex items-center gap-2.5 px-2 py-2 rounded-md hover:bg-sidebar-accent transition-colors"
+          className="flex items-center gap-2.5 px-2 py-2 rounded-md hover:bg-gray-100 transition-colors"
         >
-          <div className="w-7 h-7 bg-slate-600 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+          <div className="w-7 h-7 bg-gray-200 rounded-full flex items-center justify-center text-gray-600 text-xs font-bold flex-shrink-0">
             {profile?.full_name?.[0]?.toUpperCase() ||
               profile?.email?.[0]?.toUpperCase() ||
               "U"}
           </div>
           <div className="flex-1 min-w-0">
-            <div className="text-sm text-white truncate font-medium">
+            <div className="text-sm text-gray-900 truncate font-medium">
               {profile?.full_name || "User"}
             </div>
-            <div className="text-xs text-slate-400 truncate">
+            <div className="text-xs text-gray-500 truncate">
               {profile?.email}
             </div>
           </div>
