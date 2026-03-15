@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
+import { createClient, createServiceClient } from "@/lib/supabase/server";
 import { formulaUpdateSchema, validateFormulaWeights } from "@/lib/validators";
 import { logAudit } from "@/lib/audit";
+import { evaluateFormula } from "@/lib/formula/evaluator";
+import type { RawMetrics } from "@/lib/health-score-engine";
+import type { FormulaComponent } from "@/lib/types";
 
 export async function GET() {
   const supabase = await createClient();
@@ -47,6 +50,25 @@ export async function POST(request: NextRequest) {
   if (!profile?.organization_id) return NextResponse.json({ error: "No org" }, { status: 400 });
 
   const body = await request.json();
+
+  // If testAccountId is provided, evaluate the formula against real account data
+  if (body.testAccountId) {
+    const serviceClient = await createServiceClient();
+    const { data: scoreData } = await serviceClient
+      .from("hs_health_scores")
+      .select("raw_metrics")
+      .eq("account_id", body.testAccountId)
+      .single();
+
+    const rawMetrics = (scoreData?.raw_metrics as RawMetrics) || {};
+    const components = (body.components as FormulaComponent[]) || [];
+    const result = evaluateFormula(components, rawMetrics);
+
+    return NextResponse.json({
+      account_id: body.testAccountId,
+      ...result,
+    });
+  }
 
   // Validate with Zod
   const parsed = formulaUpdateSchema.safeParse(body);

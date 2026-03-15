@@ -1,5 +1,6 @@
 // Plan Gate — Feature access control based on subscription plan
 import { PLANS, type PlanKey } from "@/lib/stripe";
+import { createServiceClient } from "@/lib/supabase/server";
 
 export type Feature =
   | "ai_predictions"
@@ -164,6 +165,31 @@ function getUpgradePlan(currentPlan: PlanKey, feature: Feature): PlanKey {
   }
 
   return "scale";
+}
+
+/**
+ * Fetch the current plan for an organization from the database.
+ * In mock mode, returns "growth" plan.
+ */
+export async function getCurrentPlan(orgId: string): Promise<PlanKey> {
+  if (isMock) return "growth";
+
+  try {
+    const supabase = await createServiceClient();
+    const { data: org } = await supabase
+      .from("hs_organizations")
+      .select("plan")
+      .eq("id", orgId)
+      .single();
+
+    if (org?.plan && PLANS[org.plan as PlanKey]) {
+      return org.plan as PlanKey;
+    }
+  } catch (err) {
+    console.warn("getCurrentPlan: failed to fetch plan, defaulting to free", err);
+  }
+
+  return "free";
 }
 
 export function getPlanPrice(plan: PlanKey): number {

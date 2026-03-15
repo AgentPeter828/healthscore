@@ -117,6 +117,22 @@ export async function POST(request: NextRequest) {
       }
       break;
     }
+
+    case "invoice.paid": {
+      const invoice = event.data.object as Stripe.Invoice;
+      const sub = invoice.subscription;
+      if (!sub) break;
+
+      const { data: subRecord } = await supabase
+        .from("subscriptions").select("organization_id").eq("id", sub).single();
+
+      if (subRecord) {
+        await supabase.from("hs_organizations").update({
+          plan_status: "active",
+        }).eq("id", subRecord.organization_id);
+      }
+      break;
+    }
   }
 
   return NextResponse.json({ received: true });

@@ -3,6 +3,7 @@
   "middleware": {
     "/": {
       "files": [
+        "server/edge-instrumentation.js",
         "server/edge-runtime-webpack.js",
         "server/src/middleware.js"
       ],
@@ -21,11 +22,11 @@
       "wasm": [],
       "assets": [],
       "env": {
-        "__NEXT_BUILD_ID": "ArnbVi7yGRHRT7UXvIL_o",
+        "__NEXT_BUILD_ID": "iE-gg7CEWoyEO_Tv7I7k1",
         "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "ocb723XAIHIibAc0JfvpSogrhTK6qbx68/j/lib9E+c=",
-        "__NEXT_PREVIEW_MODE_ID": "57be3f472becc86a60775eba385e7e91",
-        "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "91f2ad67a9f9347ad7c3f0aeea74c64a40698934c787fc614ddb95cf7c51fb03",
-        "__NEXT_PREVIEW_MODE_SIGNING_KEY": "17050fd469ad9f8417b7f43d57773adc3693bc85d4bdb78fd215e2a99c341ce7"
+        "__NEXT_PREVIEW_MODE_ID": "bcb68e61d15f0d02592083336745d545",
+        "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "18c7af218cfded3db22209960a498ada7c82e592ed05d84e167732ea7ceeb7f7",
+        "__NEXT_PREVIEW_MODE_SIGNING_KEY": "8e89e2fff229a105b961e5e6543ea451070f7eaac3e4bbbc03e71c700948205c"
       }
     }
   },

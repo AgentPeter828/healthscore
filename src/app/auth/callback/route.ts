@@ -1,7 +1,7 @@
-import { createClient } from "@/lib/supabase/server";
+import { createClient, createServiceClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
-import { createServiceClient } from "@/lib/supabase/server";
 import { slugify } from "@/lib/utils";
+import { sendWelcomeEmail } from "@/lib/email/resend";
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
@@ -59,6 +59,15 @@ export async function GET(request: Request) {
             name: "Default Formula",
             is_active: true,
           });
+
+          // Send welcome email (best-effort, don't block)
+          if (profile.email) {
+            sendWelcomeEmail(
+              profile.email,
+              profile.full_name || profile.email,
+              orgName
+            ).catch(() => {});
+          }
 
           // Create default segments
           await serviceClient.from("hs_segments").insert([

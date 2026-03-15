@@ -4,13 +4,15 @@ import { createServiceClient } from "@/lib/supabase/server";
 import {
   calculateAllScores,
   calculateOverallScore,
-  predictChurnRisk,
   type RawMetrics,
 } from "@/lib/health-score-engine";
+import { predictChurn } from "@/lib/ai/churn-predictor";
+import { rateLimitAI } from "@/lib/rate-limit";
+import { sendChurnWarningEmail } from "@/lib/email/resend";
 import type { FormulaComponent } from "@/lib/types";
 
 // AI Churn Risk Prediction — Feature 5
-// Analyzes accounts and updates their churn risk scores
+// Uses real AI (Claude/OpenAI) with local heuristic fallback
 // Accepts optional accountId to filter to a single account
 
 export async function POST(request: NextRequest) {
@@ -46,6 +48,16 @@ export async function POST(request: NextRequest) {
   }
 
   const orgId = profile.organization_id;
+
+  // Rate limit AI predictions: 10/min per org
+  const rl = await rateLimitAI(request, orgId);
+  if (!rl.success) {
+    return NextResponse.json(
+      { error: "AI prediction rate limit exceeded. Try again shortly." },
+      { status: 429 }
+    );
+  }
+
   const serviceClient = await createServiceClient();
 
   // Fetch accounts (optionally filtered by accountId)
@@ -79,7 +91,7 @@ export async function POST(request: NextRequest) {
   }
 
   const formulaComponents = (formula?.components as FormulaComponent[]) || [];
-  const predictions: any[] = [];
+  const predictions: Record<string, unknown>[] = [];
   let updatedCount = 0;
 
   for (const account of accounts) {
@@ -102,10 +114,21 @@ export async function POST(request: NextRequest) {
     // Recalculate component scores
     const componentScores = calculateAllScores(metrics);
     const overallScore = calculateOverallScore(componentScores, formulaComponents);
-    const { risk, label, factors } = predictChurnRisk(overallScore, historyScores, metrics);
+
+    // Use AI churn predictor (Claude/OpenAI with local fallback)
+    const aiPrediction = await predictChurn({
+      name: account.name,
+      mrr: account.mrr,
+      overallScore,
+      componentScores,
+      metrics,
+      scoreHistory: historyScores,
+      renewalDate: account.renewal_date,
+      daysSinceLastActivity: metrics.days_since_last_login,
+    });
 
     // Enhanced prediction: weight trend more heavily if renewal is coming up
-    let adjustedRisk = risk;
+    let adjustedRisk = aiPrediction.probability;
     if (account.renewal_date) {
       const daysUntilRenewal = Math.max(
         0,
@@ -114,16 +137,16 @@ export async function POST(request: NextRequest) {
             (1000 * 60 * 60 * 24)
         )
       );
-      // Amplify risk signal when renewal is approaching
-      if (daysUntilRenewal <= 30 && risk > 0.3) {
-        adjustedRisk = Math.min(0.99, risk * 1.3);
-      } else if (daysUntilRenewal <= 60 && risk > 0.4) {
-        adjustedRisk = Math.min(0.99, risk * 1.15);
+      if (daysUntilRenewal <= 30 && adjustedRisk > 0.3) {
+        adjustedRisk = Math.min(0.99, adjustedRisk * 1.3);
+      } else if (daysUntilRenewal <= 60 && adjustedRisk > 0.4) {
+        adjustedRisk = Math.min(0.99, adjustedRisk * 1.15);
       }
     }
 
-    // Get recommended actions based on risk factors
-    const recommendedActions = generateRecommendations(factors, label, metrics);
+    const riskLabel = adjustedRisk >= 0.7 ? "critical" :
+      adjustedRisk >= 0.45 ? "high" :
+      adjustedRisk >= 0.2 ? "medium" : "low";
 
     // Update health score with prediction
     await serviceClient.from("hs_health_scores").upsert({
@@ -132,9 +155,7 @@ export async function POST(request: NextRequest) {
       overall_score: overallScore,
       ...componentScores,
       churn_risk: adjustedRisk,
-      churn_risk_label: adjustedRisk >= 0.7 ? "critical" :
-        adjustedRisk >= 0.45 ? "high" :
-        adjustedRisk >= 0.2 ? "medium" : "low",
+      churn_risk_label: riskLabel,
       churn_predicted_at: new Date().toISOString(),
       calculated_at: new Date().toISOString(),
     }, { onConflict: "account_id" });
@@ -145,58 +166,40 @@ export async function POST(request: NextRequest) {
       .update({ segment })
       .eq("id", account.id);
 
+    // Send churn warning email for high/critical risk accounts
+    if (riskLabel === "critical" || riskLabel === "high") {
+      // Best-effort email — don't block on failure
+      sendChurnWarningEmail(
+        user.email || "",
+        account.name,
+        riskLabel,
+        adjustedRisk,
+        aiPrediction.factors,
+        aiPrediction.recommendation
+      ).catch(() => {});
+    }
+
     updatedCount++;
     predictions.push({
       account_id: account.id,
       account_name: account.name,
       current_score: overallScore,
       predicted_churn_probability: Math.round(adjustedRisk * 100),
-      risk_label: label,
-      key_factors: factors,
-      recommended_actions: recommendedActions,
+      risk_label: riskLabel,
+      key_factors: aiPrediction.factors,
+      recommended_actions: [aiPrediction.recommendation],
+      ai_recommendation: aiPrediction.recommendation,
     });
   }
 
   // Sort by risk descending
-  predictions.sort((a, b) => b.predicted_churn_probability - a.predicted_churn_probability);
+  predictions.sort((a, b) =>
+    (b.predicted_churn_probability as number) - (a.predicted_churn_probability as number)
+  );
 
   return NextResponse.json({
     message: `Analyzed ${updatedCount} accounts`,
     predictions,
     analyzed_at: new Date().toISOString(),
   });
-}
-
-function generateRecommendations(
-  factors: string[],
-  riskLabel: string,
-  metrics: RawMetrics
-): string[] {
-  const actions: string[] = [];
-
-  if (metrics.last_payment_status === "failed") {
-    actions.push("Contact account to resolve payment issue immediately");
-  }
-  if (metrics.days_since_last_login !== undefined && metrics.days_since_last_login > 14) {
-    actions.push("Schedule a check-in call — account hasn't logged in recently");
-  }
-  if (metrics.open_tickets !== undefined && metrics.open_tickets > 2) {
-    actions.push("Escalate open support tickets to reduce friction");
-  }
-  if (metrics.nps_score !== undefined && metrics.nps_score < 0) {
-    actions.push("Follow up on negative NPS feedback");
-  }
-  if (riskLabel === "critical" || riskLabel === "high") {
-    actions.push("Add to at-risk segment and assign dedicated CSM attention");
-    actions.push("Send personalized outreach within 24 hours");
-  }
-  if (
-    metrics.features_used !== undefined &&
-    metrics.total_features_available !== undefined &&
-    metrics.features_used / metrics.total_features_available < 0.3
-  ) {
-    actions.push("Schedule feature training session to improve adoption");
-  }
-
-  return actions.slice(0, 3); // Top 3 recommendations
 }

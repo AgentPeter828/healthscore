@@ -10,6 +10,7 @@ import type { FormulaComponent } from "@/lib/types";
 import { rateLimitWebhook } from "@/lib/rate-limit";
 import { webhookPayloadSchema } from "@/lib/validators";
 import { createHmac } from "crypto";
+import { sendAlertEmail, sendPlaybookNotification } from "@/lib/email/resend";
 
 // Replay protection: LRU-style set of processed event IDs
 const processedEventIds = new Map<string, number>();
@@ -593,6 +594,24 @@ async function executePlaybook(
       last_run_at: new Date().toISOString(),
     })
     .eq("id", playbook.id);
+
+  // Send playbook notification email (best-effort)
+  const { data: ownerProfile } = await supabase
+    .from("profiles")
+    .select("email")
+    .eq("organization_id", orgId)
+    .eq("role", "owner")
+    .limit(1)
+    .single();
+
+  if (ownerProfile?.email) {
+    sendPlaybookNotification(
+      ownerProfile.email,
+      playbook.name as string,
+      account.name as string,
+      `${actionsCompleted} action(s) completed, ${actionsFailed} failed`
+    ).catch(() => {});
+  }
 }
 
 async function executeAction(
@@ -698,4 +717,32 @@ async function createAlert(
     is_read: false,
     is_resolved: false,
   });
+
+  // Send email for critical/high severity alerts (best-effort)
+  if (severity === "critical" || severity === "high") {
+    // Look up the account's CSM email or org owner email
+    const { data: csmProfile } = await supabase
+      .from("profiles")
+      .select("email")
+      .eq("organization_id", orgId)
+      .eq("role", "owner")
+      .limit(1)
+      .single();
+
+    if (csmProfile?.email) {
+      const { data: account } = await supabase
+        .from("hs_accounts")
+        .select("name")
+        .eq("id", accountId)
+        .single();
+
+      sendAlertEmail(
+        csmProfile.email,
+        title,
+        message,
+        severity,
+        account?.name
+      ).catch(() => {});
+    }
+  }
 }
