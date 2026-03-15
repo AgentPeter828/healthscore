@@ -48,7 +48,18 @@ class MockQueryBuilder {
     this.rows = [...(TABLE_DATA[table] || [])];
   }
 
-  select(_columns?: string): this { return this; }
+  select(_columns?: string, _opts?: { count?: string }): this { return this; }
+
+  range(from: number, to: number): this {
+    this.rows = this.rows.slice(from, to + 1);
+    return this;
+  }
+
+  ilike(field: string, pattern: string): this {
+    const regex = new RegExp(pattern.replace(/%/g, ".*"), "i");
+    this.rows = this.rows.filter((r) => regex.test(String(r[field] || "")));
+    return this;
+  }
 
   eq(field: string, value: any): this {
     this.rows = this.rows.filter((r) => r[field] === value);
@@ -119,26 +130,36 @@ class MockQueryBuilder {
   }
 
   insert(data: any) {
+    const inserted = Array.isArray(data) ? data[0] : data;
+    if (inserted && !inserted.id) {
+      inserted.id = `mock_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+    }
     return {
-      select: () => ({
-        single: () => Promise.resolve({ data, error: null }),
+      select: (_cols?: string) => ({
+        single: () => Promise.resolve({ data: inserted, error: null }),
+        then: (resolve: any) => resolve({ data: Array.isArray(data) ? data : [inserted], error: null }),
       }),
-      then: (resolve: any) => resolve({ data, error: null }),
+      then: (resolve: any) => resolve({ data: inserted, error: null }),
     };
   }
 
   update(data: any) {
-    return {
-      eq: () => Promise.resolve({ data, error: null }),
+    const chainable: any = {
+      eq: () => chainable,
+      in: () => chainable,
+      select: () => ({ single: () => Promise.resolve({ data, error: null }) }),
       then: (resolve: any) => resolve({ data, error: null }),
     };
+    return chainable;
   }
 
   delete() {
-    return {
-      eq: () => Promise.resolve({ data: null, error: null }),
+    const chainable: any = {
+      eq: () => chainable,
+      in: () => chainable,
       then: (resolve: any) => resolve({ data: null, error: null }),
     };
+    return chainable;
   }
 
   upsert(data: any) {

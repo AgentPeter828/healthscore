@@ -17,14 +17,21 @@ export async function POST(request: NextRequest) {
   const { plan } = await request.json();
 
   const planConfig = PLANS[plan as keyof typeof PLANS];
-  if (!planConfig || !planConfig.priceId) {
+  if (!planConfig || plan === "free") {
     return NextResponse.json({ error: "Invalid plan" }, { status: 400 });
+  }
+
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+
+  // Mock mode: return a mock checkout URL
+  if (process.env.NEXT_PUBLIC_MOCK_DATA === "true" || !planConfig.priceId) {
+    return NextResponse.json({
+      url: `${appUrl}/dashboard/settings/billing?success=true&session_id=mock_session_${plan}`,
+    });
   }
 
   const org = Array.isArray(profile.organization) ? profile.organization[0] : profile.organization;
   const customerId = (org as { stripe_customer_id?: string })?.stripe_customer_id;
-
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
 
   const session = await createCheckoutSession({
     priceId: planConfig.priceId,

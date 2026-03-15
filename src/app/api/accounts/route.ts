@@ -75,6 +75,13 @@ export async function POST(request: NextRequest) {
 
   const body = await request.json();
 
+  if (!body.name || typeof body.name !== "string" || body.name.trim().length === 0) {
+    return NextResponse.json({ error: "Account name is required" }, { status: 400 });
+  }
+
+  // Sanitize name to prevent XSS
+  body.name = body.name.replace(/[<>]/g, "");
+
   const { data: account, error } = await supabase
     .from("hs_accounts")
     .insert({

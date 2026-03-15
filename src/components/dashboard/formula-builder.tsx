@@ -18,8 +18,10 @@ import {
   CheckCircle2,
   ChevronDown,
   ChevronUp,
+  Sparkles,
 } from "lucide-react";
 import { calculateWeightedScore } from "@/lib/utils";
+import { FORMULA_PRESETS } from "@/lib/ai-presets";
 
 // ------------------------------------------------------------------
 // Types
@@ -298,8 +300,49 @@ export function FormulaBuilder() {
     );
   }
 
+  function applyPreset(preset: typeof FORMULA_PRESETS[0]) {
+    setFormula((prev) => ({
+      ...prev,
+      components: preset.components.map((c) => ({
+        key: c.key,
+        label: c.label,
+        weight: c.weight,
+        enabled: c.enabled,
+        description: c.description ?? "",
+      })),
+    }));
+    setSaveStatus("idle");
+  }
+
   return (
     <div className="space-y-4">
+      {/* Formula Presets */}
+      <Card>
+        <CardHeader className="pb-3">
+          <div className="flex items-center gap-2">
+            <Sparkles className="w-4 h-4 text-purple-500" />
+            <CardTitle className="text-base">Formula Presets</CardTitle>
+          </div>
+          <CardDescription>
+            One-click apply a pre-built scoring model
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            {FORMULA_PRESETS.map((preset) => (
+              <button
+                key={preset.id}
+                onClick={() => applyPreset(preset)}
+                className="cursor-pointer text-left border border-border rounded-lg p-3 hover:border-blue-300 hover:bg-blue-50/50 transition-colors"
+              >
+                <div className="font-medium text-sm text-foreground">{preset.name}</div>
+                <p className="text-xs text-muted-foreground mt-1">{preset.description}</p>
+              </button>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
       <Card>
         <CardHeader className="pb-4">
           <div className="flex items-start justify-between gap-4 flex-wrap">

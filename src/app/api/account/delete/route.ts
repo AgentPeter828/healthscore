@@ -3,10 +3,25 @@ import { createClient } from "@/lib/supabase/server";
 import { stripe } from "@/lib/stripe";
 import { logAudit } from "@/lib/audit";
 
-export async function POST() {
+export async function POST(request: Request) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  // Validate confirmation string
+  let body: { confirmation?: string } = {};
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
+  }
+
+  if (!body.confirmation || body.confirmation !== "DELETE MY ACCOUNT") {
+    return NextResponse.json(
+      { error: "You must provide the exact confirmation string: DELETE MY ACCOUNT" },
+      { status: 400 }
+    );
+  }
 
   const { data: profile } = await supabase
     .from("profiles")

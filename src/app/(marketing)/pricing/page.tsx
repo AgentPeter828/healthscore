@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { CheckCircle, XCircle, HelpCircle } from "lucide-react";
+import { PricingComparisonChart } from "@/components/marketing/pricing-comparison-chart";
 import { cn } from "@/lib/utils";
 
 const plans = [
@@ -244,7 +245,7 @@ export default function PricingPage() {
                         plan.highlighted ? "text-blue-100" : "text-gray-500"
                       )}
                     >
-                      /mo
+                      {" "}USD/mo
                     </span>
                   </div>
                   {annual && plan.monthlyPrice > 0 && (
@@ -345,8 +346,15 @@ export default function PricingPage() {
         </div>
       </section>
 
+      {/* Pricing Comparison Chart */}
+      <section className="py-16 bg-gray-50">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <PricingComparisonChart />
+        </div>
+      </section>
+
       {/* FAQ */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-20 bg-white">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
           <h2 className="text-2xl font-bold text-gray-900 text-center mb-12">
             Frequently asked questions

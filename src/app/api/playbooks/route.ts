@@ -45,6 +45,21 @@ export async function POST(request: NextRequest) {
   const body = await request.json();
   const { name, description, trigger_type, trigger_config, conditions, actions, is_active } = body;
 
+  // Validate required fields
+  if (!name || typeof name !== "string" || name.trim().length === 0) {
+    return NextResponse.json({ error: "Playbook name is required" }, { status: 400 });
+  }
+
+  const VALID_TRIGGER_TYPES = ["score_threshold", "score_drop", "churn_risk", "renewal_upcoming", "segment_change", "manual"];
+  if (trigger_type && !VALID_TRIGGER_TYPES.includes(trigger_type)) {
+    return NextResponse.json({ error: `Invalid trigger_type. Valid: ${VALID_TRIGGER_TYPES.join(", ")}` }, { status: 400 });
+  }
+
+  // Validate trigger_config has required fields based on trigger_type
+  if (trigger_config && typeof trigger_config === "object" && Object.keys(trigger_config).length === 0 && trigger_type) {
+    return NextResponse.json({ error: "trigger_config cannot be empty when trigger_type is specified" }, { status: 400 });
+  }
+
   // Create playbook
   const { data: playbook, error } = await supabase
     .from("hs_playbooks")

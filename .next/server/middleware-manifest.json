@@ -3,35 +3,34 @@
   "middleware": {
     "/": {
       "files": [
-        "server/edge/chunks/_3e623c._.js",
-        "server/edge/chunks/[root of the server]__c62ff8._.js",
-        "server/edge/chunks/edge-wrapper_4f0288.js"
+        "server/edge-runtime-webpack.js",
+        "server/src/middleware.js"
       ],
-      "name": "middleware",
+      "name": "src/middleware",
       "page": "/",
       "matchers": [
         {
-          "regexp": "^(?:\\/(_next\\/data\\/[^/]{1,}))?\\/dashboard(?:\\/((?:[^\\/#\\?]+?)(?:\\/(?:[^\\/#\\?]+?))*))?(\\\\.json)?[\\/#\\?]?$",
+          "regexp": "^(?:\\/(_next\\/data\\/[^/]{1,}))?\\/dashboard(?:\\/((?:[^\\/#\\?]+?)(?:\\/(?:[^\\/#\\?]+?))*))?(\\.json)?[\\/#\\?]?$",
           "originalSource": "/dashboard/:path*"
         },
         {
-          "regexp": "^(?:\\/(_next\\/data\\/[^/]{1,}))?\\/api(?:\\/((?:[^\\/#\\?]+?)(?:\\/(?:[^\\/#\\?]+?))*))?(\\\\.json)?[\\/#\\?]?$",
+          "regexp": "^(?:\\/(_next\\/data\\/[^/]{1,}))?\\/api(?:\\/((?:[^\\/#\\?]+?)(?:\\/(?:[^\\/#\\?]+?))*))?(\\.json)?[\\/#\\?]?$",
           "originalSource": "/api/:path*"
         }
       ],
       "wasm": [],
       "assets": [],
       "env": {
-        "__NEXT_BUILD_ID": "development",
+        "__NEXT_BUILD_ID": "ArnbVi7yGRHRT7UXvIL_o",
         "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "ocb723XAIHIibAc0JfvpSogrhTK6qbx68/j/lib9E+c=",
-        "__NEXT_PREVIEW_MODE_ID": "10be3d18980f970ca6bf16eb6d79c43f",
-        "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "25934340edc62ce88145abbbc4daf03dcd65f6643be76492a6bd6c0f9e3dd227",
-        "__NEXT_PREVIEW_MODE_SIGNING_KEY": "cfbbaf443892f81397ed1b4958ca3f7b46d4f9b97ffebd0c56bad0c2ba4c63bc"
+        "__NEXT_PREVIEW_MODE_ID": "57be3f472becc86a60775eba385e7e91",
+        "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "91f2ad67a9f9347ad7c3f0aeea74c64a40698934c787fc614ddb95cf7c51fb03",
+        "__NEXT_PREVIEW_MODE_SIGNING_KEY": "17050fd469ad9f8417b7f43d57773adc3693bc85d4bdb78fd215e2a99c341ce7"
       }
     }
   },
+  "functions": {},
   "sortedMiddleware": [
     "/"
-  ],
-  "functions": {}
+  ]
 }

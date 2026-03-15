@@ -29,6 +29,39 @@ export async function GET(request: NextRequest) {
   return NextResponse.json(alerts || []);
 }
 
+export async function POST(request: NextRequest) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  const { data: profile } = await supabase
+    .from("profiles").select("organization_id").eq("id", user.id).single();
+  if (!profile?.organization_id) return NextResponse.json({ error: "No org" }, { status: 400 });
+
+  const body = await request.json();
+  const { alertId, action } = body;
+
+  if (!alertId || !action) {
+    return NextResponse.json({ error: "alertId and action are required" }, { status: 400 });
+  }
+
+  if (action === "acknowledge") {
+    await supabase
+      .from("hs_alerts")
+      .update({ is_read: true })
+      .eq("id", alertId)
+      .eq("organization_id", profile.organization_id);
+  } else if (action === "resolve") {
+    await supabase
+      .from("hs_alerts")
+      .update({ is_resolved: true, resolved_at: new Date().toISOString(), resolved_by: user.id })
+      .eq("id", alertId)
+      .eq("organization_id", profile.organization_id);
+  }
+
+  return NextResponse.json({ success: true });
+}
+
 export async function PATCH(request: NextRequest) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();

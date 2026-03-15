@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createServiceClient } from "@/lib/supabase/server";
 import {
@@ -10,13 +10,23 @@ import {
 import type { FormulaComponent } from "@/lib/types";
 
 // AI Churn Risk Prediction — Feature 5
-// Analyzes all accounts and updates their churn risk scores
-// Can optionally use Anthropic Claude API for enhanced predictions
+// Analyzes accounts and updates their churn risk scores
+// Accepts optional accountId to filter to a single account
 
-export async function POST() {
+export async function POST(request: NextRequest) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  // Parse optional body
+  let body: { accountId?: string } = {};
+  try {
+    body = await request.json();
+  } catch {
+    // No body is fine — analyze all accounts
+  }
+
+  const { accountId } = body;
 
   const { data: profile } = await supabase
     .from("profiles")
@@ -38,13 +48,19 @@ export async function POST() {
   const orgId = profile.organization_id;
   const serviceClient = await createServiceClient();
 
-  // Fetch all active accounts with their health scores and history
+  // Fetch accounts (optionally filtered by accountId)
+  let accountQuery = serviceClient
+    .from("hs_accounts")
+    .select("id, name, mrr, renewal_date, health_score:hs_health_scores(*)")
+    .eq("organization_id", orgId)
+    .eq("status", "active");
+
+  if (accountId) {
+    accountQuery = accountQuery.eq("id", accountId);
+  }
+
   const [{ data: accounts }, { data: formula }] = await Promise.all([
-    serviceClient
-      .from("hs_accounts")
-      .select("id, name, mrr, renewal_date, health_score:hs_health_scores(*)")
-      .eq("organization_id", orgId)
-      .eq("status", "active"),
+    accountQuery,
     serviceClient
       .from("hs_health_score_formulas")
       .select("components")
@@ -52,6 +68,11 @@ export async function POST() {
       .eq("is_active", true)
       .single(),
   ]);
+
+  // If specific account requested but not found
+  if (accountId && (!accounts || accounts.length === 0)) {
+    return NextResponse.json({ error: "Account not found" }, { status: 404 });
+  }
 
   if (!accounts?.length) {
     return NextResponse.json({ message: "No accounts to analyze", predictions: [] });

@@ -76,7 +76,10 @@ export function MarketingFooter() {
           ))}
         </div>
 
-        <div className="mt-12 border-t border-gray-200 pt-8">
+        <div className="mt-12 border-t border-gray-200 pt-8 space-y-2">
+          <p className="text-xs text-gray-400 text-center">
+            All prices in USD
+          </p>
           <p className="text-sm text-gray-400 text-center">
             &copy; {new Date().getFullYear()} Project Firestorm Pty Ltd. All rights reserved.
           </p>

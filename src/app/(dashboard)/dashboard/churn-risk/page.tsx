@@ -22,6 +22,7 @@ import {
   Clock,
 } from "lucide-react";
 import type { ChurnRiskLabel } from "@/lib/types";
+import { getChurnActionPreset } from "@/lib/ai-presets";
 
 export const metadata = { title: "Churn Risk — HealthScore" };
 
@@ -307,6 +308,9 @@ export default async function ChurnRiskPage({ searchParams }: PageProps) {
                 <TableHead className="font-semibold text-foreground">
                   Key Factors
                 </TableHead>
+                <TableHead className="font-semibold text-foreground">
+                  AI Recommendation
+                </TableHead>
                 <TableHead className="font-semibold text-foreground">MRR</TableHead>
                 <TableHead className="font-semibold text-foreground">
                   Days to Renewal
@@ -386,6 +390,20 @@ export default async function ChurnRiskPage({ searchParams }: PageProps) {
                         <span className="text-muted-foreground text-sm">
                           No major factors
                         </span>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      {churnPct !== null ? (
+                        (() => {
+                          const preset = getChurnActionPreset(churnPct);
+                          return (
+                            <span className={`inline-flex items-center px-2 py-1 rounded text-xs border ${preset.color}`}>
+                              {preset.recommendation}
+                            </span>
+                          );
+                        })()
+                      ) : (
+                        <span className="text-muted-foreground text-sm">—</span>
                       )}
                     </TableCell>
                     <TableCell className="text-sm font-medium tabular-nums">

@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { formatDate } from "@/lib/utils";
 import { Playbook, PlaybookAction, ActionType, PlaybookTrigger } from "@/lib/types";
 import { PlaybookBuilder } from "@/components/dashboard/playbooks/playbook-builder";
+import { PlaybookTemplates } from "@/components/dashboard/playbooks/playbook-templates";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -128,6 +129,9 @@ export default async function PlaybooksPage() {
           <div className="text-2xl font-bold text-foreground">{totalRuns}</div>
         </div>
       </div>
+
+      {/* Playbook Templates */}
+      <PlaybookTemplates />
 
       {/* Playbook List */}
       {typedPlaybooks.length === 0 ? (

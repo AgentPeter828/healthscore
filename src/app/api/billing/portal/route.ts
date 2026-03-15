@@ -16,11 +16,15 @@ export async function POST(request: NextRequest) {
   const org = Array.isArray(profile?.organization) ? profile?.organization[0] : profile?.organization;
   const customerId = (org as { stripe_customer_id?: string })?.stripe_customer_id;
 
-  if (!customerId) {
-    return NextResponse.json({ error: "No billing account found" }, { status: 400 });
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+
+  // Mock mode: return a mock portal URL
+  if (process.env.NEXT_PUBLIC_MOCK_DATA === "true" || !customerId) {
+    return NextResponse.json({
+      url: `${appUrl}/dashboard/settings/billing?portal=true`,
+    });
   }
 
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
   const session = await createCustomerPortalSession({
     customerId,
     returnUrl: `${appUrl}/dashboard/settings`,
